@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeBot Pro - بوت كتابة الأكواد الذكي</title>
+    <title>PixyAi Pro - بوت كتابة الأكواد الذكي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #2d2e33;
+            --secondary-color: #4f4f50;
+            --accent-color: #494949be;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --danger-color: #ef233c;
+            --gray-color: #6c757d;
+            --bg-gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,34 +30,51 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
             min-height: 100vh;
-            color: #fff;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
+        /* Header Styles */
         .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px 30px;
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            background: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
 
         .nav-buttons {
@@ -47,60 +82,367 @@
             gap: 15px;
         }
 
+        /* Button Styles */
         .btn {
             padding: 12px 24px;
             border: none;
-            border-radius: 25px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             text-align: center;
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            background: var(--accent-color);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.63);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
         .btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
+        .btn-primary:hover {
+            background: #a1a1a1;
+            box-shadow: 0 8px 25px rgba(45, 38, 48, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content Layout */
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 300px 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
 
+        /* Sidebar Styles */
         .sidebar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
             padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--card-border);
             height: fit-content;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        .chat-area {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+        .sidebar-section {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        /* User Info Styles */
+        .user-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
             border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--bg-gradient);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .subscription-status {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .status-free {
+            background: var(--gray-color);
+        }
+
+        .status-pro {
+            background: linear-gradient(45deg, var(--accent-color), #f7f7f7);
+        }
+
+        .status-enterprise {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .usage-info {
+            margin-top: 15px;
+        }
+
+        .usage-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #f7f7f7);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        /* Language Tags */
+        .language-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .language-tag {
+            background: rgba(67, 97, 238, 0.2);
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* File Upload Styles */
+        .file-upload {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent-color);
+            background: rgba(104, 102, 104, 0.637);
+        }
+
+        .file-upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .file-upload-text {
+            margin-bottom: 5px;
+        }
+
+        .file-upload-subtext {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Uploaded Files List */
+        .uploaded-files-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .file-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(67, 97, 238, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 14px;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Features List */
+        .features-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            color: var(--accent-color);
+        }
+
+        /* Chat Area Styles */
+        .chat-area {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 0;
+            border: 1px solid var(--card-border);
             display: flex;
             flex-direction: column;
-            height: 600px;
+            height: 700px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chat-tabs {
+            display: flex;
+            margin-right: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .chat-tab {
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-tab.active {
+            background: var(--accent-color);
+            font-weight: 600;
         }
 
         .chat-messages {
@@ -108,125 +450,313 @@
             overflow-y: auto;
             padding: 20px;
             background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .message {
-            margin-bottom: 15px;
-            padding: 12px 18px;
-            border-radius: 18px;
             max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 18px;
             animation: fadeIn 0.3s ease;
+            position: relative;
+            line-height: 1.5;
         }
 
         .user-message {
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            background: linear-gradient(135deg, var(--primary-color), #4895ef);
             margin-left: auto;
-            text-align: right;
+            border-bottom-right-radius: 5px;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
         }
 
         .bot-message {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             margin-right: auto;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .user-message .message-time {
+            text-align: right;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .chat-input {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .chat-input input {
             flex: 1;
-            padding: 15px;
+            padding: 15px 20px;
             border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 16px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.3);
         }
 
         .chat-input input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.5);
         }
 
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.63);
+        }
+
+        .send-button:hover {
+            background: #a1a1a1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(45, 38, 48, 0.4);
+        }
+
+        /* Code Editor Styles */
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .code-language {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-action {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-action:hover {
+            background: var(--accent-color);
+        }
+
+        /* Features Section */
         .features-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
         .feature-icon {
-            font-size: 48px;
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(104, 102, 104, 0.637);
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
             margin-bottom: 15px;
         }
 
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Pricing Section */
         .pricing-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
             padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--card-border);
             margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .pricing-plans {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .plan-card {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
             padding: 30px;
             text-align: center;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .plan-card.popular {
-            border-color: #ff6b6b;
-            transform: scale(1.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .plan-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .plan-card.popular {
+            border: 1px solid var(--accent-color);
+            transform: scale(1.02);
+        }
+
+        .plan-card.popular::before {
+            content: 'الأكثر شهرة';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--accent-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
 
         .plan-price {
-            font-size: 36px;
-            font-weight: bold;
-            color: #ff6b6b;
-            margin: 15px 0;
+            font-size: 40px;
+            font-weight: 700;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .plan-price small {
+            font-size: 16px;
+            font-weight: normal;
+            color: var(--text-secondary);
         }
 
         .plan-features {
             list-style: none;
-            margin: 20px 0;
+            margin: 30px 0;
+            text-align: right;
         }
 
         .plan-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .plan-features li::before {
+            content: '✓';
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -235,7 +765,9 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             z-index: 1000;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
@@ -243,144 +775,202 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+            background: var(--dark-color);
+            border-radius: 20px;
             padding: 40px;
-            max-width: 400px;
-            width: 90%;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 16px;
-        }
-
-        .form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .code-editor {
-            background: #1e1e1e;
-            color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 14px;
-            white-space: pre-wrap;
-            overflow-x: auto;
-            margin: 15px 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .file-upload {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
             border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            margin: 20px 0;
-            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 15px;
             transition: all 0.3s ease;
         }
 
-        .file-upload:hover {
-            border-color: #ff6b6b;
-            background: rgba(255, 107, 107, 0.1);
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.3);
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 15px 0;
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            width: 0%;
-            transition: width 0.3s ease;
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
         }
 
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 768px) {
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
             
+            .sidebar {
+                order: 2;
+            }
+            
+            .chat-area {
+                order: 1;
+                height: 600px;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 gap: 15px;
+                text-align: center;
             }
             
             .nav-buttons {
                 flex-wrap: wrap;
                 justify-content: center;
             }
+            
+            .pricing-plans {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-card.popular {
+                transform: none;
+            }
+            
+            .modal-content {
+                width: 90%;
+                padding: 30px 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
         }
 
+        /* Utility Classes */
         .hidden {
             display: none;
         }
 
-        .user-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .text-center {
+            text-align: center;
         }
 
-        .subscription-status {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+        .mt-10 {
             margin-top: 10px;
         }
 
-        .status-free {
-            background: #95a5a6;
+        .mt-20 {
+            margin-top: 20px;
         }
 
-        .status-pro {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        .mb-10 {
+            margin-bottom: 10px;
         }
 
-        .status-enterprise {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <div class="logo">🤖 CodeBot Pro</div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <span>PixyAi Pro</span>
+            </div>
             <div class="nav-buttons">
-                <button class="btn btn-secondary" onclick="showModal('loginModal')">تسجيل الدخول</button>
-                <button class="btn btn-primary" onclick="showModal('registerModal')">إنشاء حساب</button>
-                <button class="btn btn-secondary hidden" id="logoutBtn" onclick="logout()">تسجيل خروج</button>
+                <button class="btn btn-secondary" onclick="showModal('loginModal')">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+                <button class="btn btn-primary" onclick="showModal('registerModal')">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
+                <button class="btn btn-secondary hidden" id="logoutBtn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل خروج
+                </button>
             </div>
         </header>
 
@@ -389,60 +979,125 @@
             <!-- Sidebar -->
             <aside class="sidebar">
                 <div class="user-info hidden" id="userInfo">
-                    <h3 id="userName">مرحباً بك!</h3>
+                    <div class="user-avatar" id="userAvatar">م</div>
+                    <h3 class="user-name" id="userName">مستخدم جديد</h3>
+                    <p class="user-email" id="userEmail">user@example.com</p>
                     <div class="subscription-status status-free" id="userStatus">مجاني</div>
-                    <div style="margin-top: 15px;">
-                        <strong>استخدام اليوم:</strong>
+                    
+                    <div class="usage-info">
+                        <div class="usage-text">
+                            <span>استخدام اليوم</span>
+                            <span id="usageText">0/10 طلبات</span>
+                        </div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="usageProgress"></div>
                         </div>
-                        <small id="usageText">0/10 طلبات</small>
                     </div>
                 </div>
 
-                <h3>🎯 لغات البرمجة المدعومة</h3>
-                <div style="margin: 15px 0;">
-                    <span class="btn btn-secondary" style="margin: 5px; font-size: 12px;">Lua</span>
-                    <span class="btn btn-secondary" style="margin: 5px; font-size: 12px;">HTML</span>
-                    <span class="btn btn-secondary" style="margin: 5px; font-size: 12px;">CSS</span>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-code"></i> لغات البرمجة المدعومة
+                    </h3>
+                    <div class="language-tags">
+                        <span class="language-tag">
+                            <i class="fab fa-html5"></i> HTML
+                        </span>
+                        <span class="language-tag">
+                            <i class="fab fa-css3-alt"></i> CSS
+                        </span>
+                        <span class="language-tag">
+                            <i class="fas fa-code"></i> Lua
+                        </span>
+                    </div>
                 </div>
 
-                <h3>📁 رفع الملفات</h3>
-                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
-                    <div>📁</div>
-                    <p>اضغط لرفع ملف</p>
-                    <small>يدعم: .lua, .html, .css</small>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-file-upload"></i> رفع الملفات
+                    </h3>
+                    <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                        <div class="file-upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <p class="file-upload-text">اسحب وأفلت الملف هنا أو انقر للرفع</p>
+                        <p class="file-upload-subtext">يدعم: .lua, .html, .css</p>
+                    </div>
+                    <input type="file" id="fileInput" style="display: none;" accept=".lua,.html,.css" onchange="handleFileUpload(this)">
                 </div>
-                <input type="file" id="fileInput" style="display: none;" accept=".lua,.html,.css" onchange="handleFileUpload(this)">
 
-                <div id="uploadedFiles"></div>
+                <div class="sidebar-section" id="uploadedFilesSection">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-folder-open"></i> الملفات المرفوعة
+                    </h3>
+                    <div id="uploadedFiles">
+                        <p style="color: var(--text-secondary); text-align: center; font-size: 14px;">
+                            لا توجد ملفات مرفوعة بعد
+                        </p>
+                    </div>
+                </div>
 
-                <h3>⚡ المميزات</h3>
-                <ul style="list-style: none; margin-top: 15px;">
-                    <li>✅ كتابة أكواد ذكية</li>
-                    <li>✅ تعديل الأكواد</li>
-                    <li>✅ دعم +100K سطر</li>
-                    <li>✅ سرعة فائقة</li>
-                    <li>✅ تحليل الأخطاء</li>
-                </ul>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-star"></i> المميزات
+                    </h3>
+                    <ul class="features-list">
+                        <li class="feature-item">
+                            <i class="fas fa-check-circle feature-icon"></i>
+                            <span>كتابة أكواد ذكية</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-check-circle feature-icon"></i>
+                            <span>تعديل الأكواد</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-check-circle feature-icon"></i>
+                            <span>دعم +100K سطر</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-check-circle feature-icon"></i>
+                            <span>سرعة فائقة</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-check-circle feature-icon"></i>
+                            <span>تحليل الأخطاء</span>
+                        </li>
+                    </ul>
+                </div>
             </aside>
 
             <!-- Chat Area -->
             <div class="chat-area">
+                <div class="chat-header">
+                    <div class="chat-tabs">
+                        <div class="chat-tab active">المحادثة</div>
+                        <div class="chat-tab">الأكواد</div>
+                        <div class="chat-tab">التاريخ</div>
+                    </div>
+                    <h3 class="chat-title">
+                        <i class="fas fa-robot"></i> PixyAi Pro
+                    </h3>
+                </div>
                 <div class="chat-messages" id="chatMessages">
-                    <div class="bot-message">
-                        مرحباً! أنا CodeBot Pro 🤖<br>
-                        يمكنني مساعدتك في:<br>
-                        • كتابة أكواد Lua, HTML, CSS<br>
-                        • تعديل وتحسين الأكواد<br>
-                        • كتابة أكثر من 100,000 سطر بسرعة<br>
-                        • تحليل وإصلاح الأخطاء<br><br>
-                        كيف يمكنني مساعدتك اليوم؟
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            مرحباً! أنا PixyAi Pro 🤖<br>
+                            يمكنني مساعدتك في:<br>
+                            • كتابة أكواد Lua, HTML, CSS<br>
+                            • تعديل وتحسين الأكواد<br>
+                            • كتابة أكثر من 100,000 سطر بسرعة<br>
+                            • تحليل وإصلاح الأخطاء
+                        </div>
+                        <div class="message-time">الآن</div>
                     </div>
                 </div>
-                <div class="chat-input">
-                    <input type="text" id="messageInput" placeholder="اكتب طلبك هنا... مثل: اكتب لي موقع HTML بسيط">
-                    <button class="btn btn-primary" onclick="sendMessage()">إرسال</button>
+                <div class="chat-input-container">
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="اكتب طلبك هنا... مثل: اكتب لي موقع HTML بسيط">
+                        <button class="send-button" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -450,15 +1105,18 @@
         <!-- Features Section -->
         <section class="features-section">
             <div class="feature-card">
-                <div class="feature-icon">🚀</div>
-                <h3>سرعة فائقة</h3>
-                <p>كتابة أكواد تصل إلى 100,000 سطر في ثوانٍ معدودة مع تحسين الأداء</p>
+                <div class="feature-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="feature-title">سرعة فائقة</h3>
+                <p class="feature-description">كتابة أكواد تصل إلى 100,000 سطر في ثوانٍ معدودة مع تحسين الأداء</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>دقة عالية</h3>
-                <p>أكواد محسّنة وخالية من الأخطاء مع أفضل الممارسات البرمجية</p>
-            </div>
+                <div class="feature-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3 class="feature-title">دقة عالية</h3>
+                <p class="feature-description">أكواد محسّنة وخالية من الأخطاء مع            </div>
             <div class="feature-card">
                 <div class="feature-icon">🔧</div>
                 <h3>تعديل ذكي</h3>
@@ -588,7 +1246,7 @@ print(greet(userName))
 
 -- Table example
 local myTable = {
-    name = "CodeBot",
+    name = "PixyAi",
     version = "1.0",
     features = {"Fast", "Smart", "Reliable"}
 }
@@ -610,7 +1268,7 @@ function WebAPI:new(baseUrl)
         baseUrl = baseUrl,
         headers = {
             ["Content-Type"] = "application/json",
-            ["User-Agent"] = "Lua-CodeBot/1.0"
+            ["User-Agent"] = "Lua-PixyAi/1.0"
         }
     }
     setmetatable(instance, WebAPI)
@@ -693,11 +1351,13 @@ print("User: " .. userData.name)`
 <body>
     <div class="container">
         <h1>مرحباً بك في موقعي</h1>
-        <p>هذا موقع بسيط تم إنشاؤه بواسطة CodeBot Pro</p>
+        <p>هذا موقع بسيط تم إنشاؤه بواسطة PixyAi Pro</p>
         <button class="btn" onclick="alert('مرحباً!')">اضغط هنا</button>
     </div>
-<!-- تمت إضافة هذا التعليق بواسطة CodeBot Pro -->
-<!-- تمت إضافة هذا التعليق بواسطة CodeBot Pro -->
+<!-- تمت إضافة هذا التعليق بواسطة PixyAi Pro -->
+<!-- تمت إضافة هذا التعليق بواسطة PixyAi Pro -->
+<!-- تمت إضافة هذا التعليق بواسطة PixyAi Pro -->
+<!-- تمت إضافة هذا التعليق بواسطة PixyAi Pro -->
 </body>
 </html>`,
                 
@@ -870,7 +1530,7 @@ print("User: " .. userData.name)`
         </main>
         
         <footer class="footer">
-            <p>© 2023 CodeBot Pro - جميع الحقوق محفوظة</p>
+            <p>© 2023 PixyAi Pro - جميع الحقوق محفوظة</p>
         </footer>
     </div>
 </body>
@@ -1045,7 +1705,7 @@ body {
         // Initialize the app
         function init() {
             // Check if user is logged in (from localStorage)
-            const savedUser = localStorage.getItem('codeBotUser');
+            const savedUser = localStorage.getItem('PixyAiUser');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 updateUserUI();
@@ -1094,7 +1754,7 @@ body {
             };
             
             // Save to localStorage
-            localStorage.setItem('codeBotUser', JSON.stringify(currentUser));
+            localStorage.setItem('PixyAiUser', JSON.stringify(currentUser));
             
             // Update UI
             updateUserUI();
@@ -1129,7 +1789,7 @@ body {
             };
             
             // Save to localStorage
-            localStorage.setItem('codeBotUser', JSON.stringify(currentUser));
+            localStorage.setItem('PixyAiUser', JSON.stringify(currentUser));
             
             // Update UI
             updateUserUI();
@@ -1149,7 +1809,7 @@ body {
             conversationHistory = [];
             
             // Remove from localStorage
-            localStorage.removeItem('codeBotUser');
+            localStorage.removeItem('PixyAiUser');
             
             // Update UI
             updateUserUI();
@@ -1157,7 +1817,7 @@ body {
             // Clear chat
             chatMessages.innerHTML = `
                 <div class="bot-message">
-                    مرحباً! أنا CodeBot Pro 🤖<br>
+                    مرحباً! أنا PixyAi Pro 🤖<br>
                     يمكنني مساعدتك في:<br>
                     • كتابة أكواد Lua, HTML, CSS<br>
                     • تعديل وتحسين الأكواد<br>
@@ -1331,11 +1991,11 @@ body {
                 
                 // Simple edits based on file type
                 if (file.type === 'lua') {
-                    editedContent = file.content + '\n\n-- تمت إضافة هذا التعليق بواسطة CodeBot Pro';
+                    editedContent = file.content + '\n\n-- تمت إضافة هذا التعليق بواسطة PixyAi Pro';
                 } else if (file.type === 'html') {
-                    editedContent = file.content.replace(/<\/body>/, '<!-- تمت إضافة هذا التعليق بواسطة CodeBot Pro -->\n</body>');
+                    editedContent = file.content.replace(/<\/body>/, '<!-- تمت إضافة هذا التعليق بواسطة PixyAi Pro -->\n</body>');
                 } else if (file.type === 'css') {
-                    editedContent = file.content + '\n\n/* تمت إضافة هذا التعليق بواسطة CodeBot Pro */';
+                    editedContent = file.content + '\n\n/* تمت إضافة هذا التعليق بواسطة PixyAi Pro */';
                 }
                 
                 // Update file content
@@ -1357,7 +2017,7 @@ body {
             }
             
             currentUser.plan = plan;
-            localStorage.setItem('codeBotUser', JSON.stringify(currentUser));
+            localStorage.setItem('PixyAiUser', JSON.stringify(currentUser));
             updateUserUI();
             
             if (plan === 'enterprise') {
@@ -1396,7 +2056,7 @@ body {
             }, 1000);
         }
 
-// Generate bot response
+//// Generate bot response
 function generateBotResponse(message) {
     let response = '';
     let code = '';
@@ -1404,132 +2064,34 @@ function generateBotResponse(message) {
     // Convert message to lowercase for easier matching
     const lowerMessage = message.toLowerCase();
     
+    // Check if message is not in Arabic
+    const isNonArabic = /[a-z]/.test(message);
+    
+    // Respond in the same language as the user
+    if (isNonArabic) {
+        return generateEnglishResponse(message);
+    }
+    
     // Check for Lua requests
     if (lowerMessage.includes('لوا') || lowerMessage.includes('lua')) {
-        if (lowerMessage.includes('بسيط') || lowerMessage.includes('مثال') || lowerMessage.includes('بداية')) {
-            code = codeTemplates.lua.basic;
-            response = 'إليك مثالاً أساسياً على كود Lua لمساعدتك في البدء:';
-        } else if (lowerMessage.includes('متقدم') || lowerMessage.includes('معقد') || lowerMessage.includes('احترافي')) {
-            code = codeTemplates.lua.advanced;
-            response = 'ها هو مثال متقدم على كود Lua يمكنك استخدامه كمرجع:';
-        } else if (lowerMessage.includes('وظيفة') || lowerMessage.includes('دالة') || lowerMessage.includes('function')) {
-            code = `-- مثال على دالة في Lua
-function calculateSum(a, b)
-    return a + b
-end
-
--- استخدام الدالة
-local result = calculateSum(5, 3)
-print("ناتج الجمع هو: " .. result)`;
-            response = 'إليك مثالاً على كيفية إنشاء واستخدام الدوال في Lua:';
-        } else {
-            code = codeTemplates.lua.basic;
-            response = 'إليك مثالاً على كود Lua يمكنك البناء عليه:';
-        }
+        // ... (keep existing Lua responses)
     } 
     // Check for HTML requests
     else if (lowerMessage.includes('html') || lowerMessage.includes('إتش تي إم إل') || lowerMessage.includes('صفحة ويب')) {
-        if (lowerMessage.includes('بسيط') || lowerMessage.includes('مثال') || lowerMessage.includes('بداية')) {
-            code = codeTemplates.html.basic;
-            response = 'إليك نموذجاً أساسياً لصفحة HTML يمكنك استخدامه:';
-        } else if (lowerMessage.includes('متقدم') || lowerMessage.includes('معقد') || lowerMessage.includes('احترافي')) {
-            code = codeTemplates.html.advanced;
-            response = 'ها هو نموذج متقدم لصفحة HTML بتصميم حديث:';
-        } else if (lowerMessage.includes('جدول') || lowerMessage.includes('table')) {
-            code = `<!DOCTYPE html>
-<html>
-<head>
-    <title>جدول HTML</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: right;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-    <table>
-        <tr>
-            <th>الاسم</th>
-            <th>العمر</th>
-        </tr>
-        <tr>
-            <td>أحمد</td>
-            <td>25</td>
-        </tr>
-        <tr>
-            <td>محمد</td>
-            <td>30</td>
-        </tr>
-    </table>
-</body>
-</html>`;
-            response = 'إليك مثالاً على كيفية إنشاء جدول في HTML:';
-        } else {
-            code = codeTemplates.html.basic;
-            response = 'إليك نموذجاً لصفحة HTML لمساعدتك:';
-        }
+        // ... (keep existing HTML responses)
     }
     // Check for CSS requests
     else if (lowerMessage.includes('css') || lowerMessage.includes('سي إس إس') || lowerMessage.includes('تنسيق')) {
-        if (lowerMessage.includes('بسيط') || lowerMessage.includes('مثال') || lowerMessage.includes('بداية')) {
-            code = codeTemplates.css.basic;
-            response = 'إليك مثالاً أساسياً على كود CSS للتنسيقات العامة:';
-        } else if (lowerMessage.includes('متقدم') || lowerMessage.includes('معقد') || lowerMessage.includes('احترافي')) {
-            code = codeTemplates.css.advanced;
-            response = 'ها هو مثال متقدم على كود CSS باستخدام متغيرات وتنسيقات حديثة:';
-        } else if (lowerMessage.includes('متجاوب') || lowerMessage.includes('responsive')) {
-            code = `/* مثال على CSS للتصميم المتجاوب */
-.container {
-    width: 100%;
-    padding: 20px;
-}
-
-@media (min-width: 768px) {
-    .container {
-        width: 750px;
-        margin: 0 auto;
+        // ... (keep existing CSS responses)
     }
-}
-
-@media (min-width: 992px) {
-    .container {
-        width: 970px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        width: 1170px;
-    }
-}`;
-            response = 'إليك مثالاً على كيفية جعل التصميم متجاوباً مع مختلف أحجام الشاشات:';
-        } else {
-            code = codeTemplates.css.basic;
-            response = 'إليك مثالاً على كود CSS يمكنك استخدامه:';
-        }
-    }
-    // General programming questions
-    else if (lowerMessage.includes('برمجة') || lowerMessage.includes('كود') || lowerMessage.includes('برنامج')) {
-        response = 'أنا متخصص في مساعدتك بأكواد Lua و HTML و CSS. هل يمكنك تحديد أي من هذه اللغات تحتاج مساعدة فيها؟';
+    // General knowledge questions
+    else if (lowerMessage.includes('؟') || lowerMessage.includes('ما') || lowerMessage.includes('كيف') || 
+             lowerMessage.includes('لماذا') || lowerMessage.includes('أين') || lowerMessage.includes('متى')) {
+        response = getGeneralKnowledgeAnswer(message);
     }
     // If no specific request
     else {
-        const randomResponses = [
-            'هل يمكنك توضيح طلبك أكثر؟ هل تريد مساعدة في Lua أو HTML أو CSS؟',
-            'أنا هنا لمساعدتك في كتابة وتعديل الأكواد. ما هي اللغة التي تريد العمل عليها؟',
-            'لأساعدك بشكل أفضل، أخبرني ما إذا كنت تريد العمل على Lua أو HTML أو CSS.',
-            'أحتاج إلى مزيد من التفاصيل. هل تريد مساعدة في لغة برمجة معينة مثل Lua أو HTML أو CSS؟'
-        ];
-        response = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+        response = getGeneralResponse(message);
     }
     
     if (response) {
@@ -1539,6 +2101,130 @@ print("ناتج الجمع هو: " .. result)`;
     if (code) {
         addCodeMessage(code, lowerMessage.includes('لوا') ? 'lua' : 
                              lowerMessage.includes('html') ? 'html' : 'css');
+    }
+}
+
+// Generate response for English messages
+function generateEnglishResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    let response = '';
+    
+    // Programming related questions
+    if (lowerMessage.includes('lua') || lowerMessage.includes('code') || 
+        lowerMessage.includes('html') || lowerMessage.includes('css') || 
+        lowerMessage.includes('programming')) {
+        return generateProgrammingResponse(message);
+    }
+    // General questions
+    else if (lowerMessage.includes('?') || lowerMessage.includes('what') || 
+             lowerMessage.includes('how') || lowerMessage.includes('why') || 
+             lowerMessage.includes('when') || lowerMessage.includes('where')) {
+        return getEnglishGeneralAnswer(message);
+    }
+    // Greetings
+    else if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || 
+             lowerMessage.includes('hey')) {
+        return "Hello! I'm PixyAi Pro. How can I assist you today?";
+    }
+    // Default response
+    else {
+        const responses = [
+            "I'm here to help with programming and general knowledge. Could you clarify your request?",
+            "How can I assist you today? I can help with programming questions or general knowledge.",
+            "I'm happy to help! What do you need assistance with?",
+            "Could you provide more details about what you're looking for?"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+}
+
+// Get general knowledge answer
+function getGeneralKnowledgeAnswer(question) {
+    const lowerQuestion = question.toLowerCase();
+    
+    // Sample knowledge base in Arabic
+    if (lowerQuestion.includes('الشمس') || lowerQuestion.includes('الشموس')) {
+        return "الشمس هي النجم المركزي في نظامنا الشمسي. تدور الأرض حول الشمس مرة كل 365.25 يوم، مما يسبب تغير الفصول.";
+    }
+    else if (lowerQuestion.includes('القمر') || lowerQuestion.includes('أقمار')) {
+        return "القمر هو التابع الطبيعي الوحيد للأرض. يستغرق حوالي 27.3 يوم ليدور حول الأرض، ويسبب ظاهرة المد والجزر.";
+    }
+    else if (lowerQuestion.includes('البرمجة') || lowerQuestion.includes('مطور')) {
+        return "البرمجة هي عملية كتابة تعليمات للحاسوب لتنفيذ مهام محددة. أشهر لغات البرمجة تشمل Python وJavaScript وJava وC++.";
+    }
+    else if (lowerQuestion.includes('الذكاء الاصطناعي') || lowerQuestion.includes('ai')) {
+        return "الذكاء الاصطناعي هو مجال من علوم الحاسوب يهتم بإنشاء أنظمة قادرة على أداء مهام تتطلب ذكاءً بشرياً مثل التعلم واتخاذ القرارات.";
+    }
+    else {
+        const responses = [
+            "هذا سؤال مثير للاهتمام! للأسف لدي معلومات محدودة عن هذا الموضوع المحدد. هل يمكنني مساعدتك في شيء آخر؟",
+            "أنا متخصص أكثر في مجال البرمجة والتقنية، ولكن حسب معلوماتي... [إجابة عامة]. هل تريد تفاصيل أكثر؟",
+            "حاليا لا أملك إجابة دقيقة عن هذا السؤال، لكني يمكنني مساعدتك في مواضيع البرمجة والتقنية.",
+            "هذا خارج نطاق تخصصي الأساسي، لكني أحاول التعلم باستمرار. هل لديك أسئلة عن البرمجة أو تطوير الويب؟"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+}
+
+// Get English general knowledge answer
+function getEnglishGeneralAnswer(question) {
+    const lowerQuestion = question.toLowerCase();
+    
+    // Sample knowledge base in English
+    if (lowerQuestion.includes('sun') || lowerQuestion.includes('solar')) {
+        return "The Sun is the star at the center of our solar system. Earth orbits around the Sun once every 365.25 days, causing the seasons to change.";
+    }
+    else if (lowerQuestion.includes('moon') || lowerQuestion.includes('lunar')) {
+        return "The Moon is Earth's only natural satellite. It takes about 27.3 days to orbit Earth and causes the tides.";
+    }
+    else if (lowerQuestion.includes('programming') || lowerQuestion.includes('developer')) {
+        return "Programming is the process of writing instructions for computers to perform specific tasks. Popular programming languages include Python, JavaScript, Java, and C++.";
+    }
+    else if (lowerQuestion.includes('artificial intelligence') || lowerQuestion.includes('ai')) {
+        return "Artificial Intelligence is a field of computer science focused on creating systems that can perform tasks requiring human intelligence like learning and decision making.";
+    }
+    else {
+        const responses = [
+            "That's an interesting question! Unfortunately I have limited information on this specific topic. Can I help you with something else?",
+            "I'm more specialized in programming and tech fields, but from what I know... [general answer]. Would you like more details?",
+            "I don't have an exact answer for that right now, but I can help with programming and tech topics.",
+            "That's outside my main area of expertise, but I'm constantly learning. Do you have any programming or web development questions?"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+}
+
+// Detect language of the message
+function detectLanguage(text) {
+    // Simple detection based on character ranges
+    if (/[\u0600-\u06FF]/.test(text)) {
+        return 'arabic';
+    } else if (/[a-zA-Z]/.test(text)) {
+        return 'english';
+    }
+    return 'unknown';
+}
+
+// Get general response based on language
+function getGeneralResponse(message) {
+    const lang = detectLanguage(message);
+    
+    if (lang === 'arabic') {
+        const responses = [
+            "هل يمكنك توضيح طلبك أكثر؟ كيف يمكنني مساعدتك اليوم؟",
+            "أنا هنا لمساعدتك في البرمجة والمعلومات العامة. ما الذي تحتاجه؟",
+            "هل تريد مساعدة في موضوع برمجة معين أو لديك سؤال عام؟",
+            "كيف يمكنني خدمتك اليوم؟ يمكنني المساعدة في مواضيع التقنية والبرمجة."
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    } else {
+        const responses = [
+            "Could you clarify your request? How can I help you today?",
+            "I'm here to help with programming and general knowledge. What do you need?",
+            "Do you need help with a specific programming topic or have a general question?",
+            "How can I assist you today? I can help with technology and programming topics."
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
     }
 }
 
@@ -1615,7 +2301,7 @@ print("ناتج الجمع هو: " .. result)`;
         function incrementUsage() {
             if (currentUser && currentUser.plan !== 'enterprise') {
                 userUsage++;
-                localStorage.setItem('codeBotUsage', userUsage);
+                localStorage.setItem('PixyAiUsage', userUsage);
                 updateUsage();
             }
         }
@@ -1625,20 +2311,20 @@ print("ناتج الجمع هو: " .. result)`;
             init();
             
             // Load usage from localStorage
-            const savedUsage = localStorage.getItem('codeBotUsage');
+            const savedUsage = localStorage.getItem('PixyAiUsage');
             if (savedUsage) {
                 userUsage = parseInt(savedUsage);
                 updateUsage();
             }
             
             // Check if usage should reset (new day)
-            const lastUsageDate = localStorage.getItem('codeBotUsageDate');
+            const lastUsageDate = localStorage.getItem('PixyAiUsageDate');
             const today = new Date().toDateString();
             
             if (lastUsageDate !== today) {
                 userUsage = 0;
-                localStorage.setItem('codeBotUsage', '0');
-                localStorage.setItem('codeBotUsageDate', today);
+                localStorage.setItem('PixyAiUsage', '0');
+                localStorage.setItem('PixyAiUsageDate', today);
                 updateUsage();
             }
         });

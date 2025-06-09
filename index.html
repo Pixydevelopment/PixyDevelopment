@@ -2098,6 +2098,12 @@ function generateArabicResponse(message) {
         ];
         return greetings[Math.floor(Math.random() * greetings.length)];
     }
+        if (lowerMessage.includes('ما هو مؤسس موقع PixyAi')) {
+        const greetings = [
+            "الموؤسس موقع PixyAi هو علي صلاح محمد الواوان الشمري",
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+    }
     
     // Handle general questions
     if (lowerMessage.includes('؟') || lowerMessage.includes('ما') || 

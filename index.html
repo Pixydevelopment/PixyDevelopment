@@ -829,7 +829,7 @@
         .form-input:focus {
             outline: none;
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 0 0 2px rgba(238, 241, 255, 0.3);
         }
 
         .form-input::placeholder {
@@ -1073,6 +1073,7 @@
                         <div class="chat-tab active">المحادثة</div>
                         <div class="chat-tab">الأكواد</div>
                         <div class="chat-tab">التاريخ</div>
+                        <div class="chat-tab" onclick="startQuizGame()"><i class="fas fa-gamepad"></i> لعبة أسئلة</div>
                     </div>
                     <h3 class="chat-title">
                         <i class="fas fa-robot"></i> PixyAi Pro
@@ -1101,6 +1102,1436 @@
                 </div>
             </div>
         </div>
+
+
+<!-- أضف هذا قبل نهاية container -->
+<div class="modal" id="quizModal">
+    <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-header">
+            <h2 class="modal-title"><i class="fas fa-trophy"></i> لعبة الأسئلة المتطورة</h2>
+            <p class="modal-subtitle">اختر الإعدادات واستمتع بتجربة لعب مميزة!</p>
+        </div>
+        <div class="quiz-settings">
+            <div class="settings-grid">
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-users"></i> عدد اللاعبين</label>
+                    <select id="playersCount" class="form-input premium-select">
+                        <option value="1">🎮 1 لاعب</option>
+                        <option value="2">👥 2 لاعبين</option>
+                        <option value="3">👨‍👩‍👦 3 لاعبين</option>
+                        <option value="4">👨‍👩‍👧‍👦 4 لاعبين</option>
+                        <option value="5">🏆 5 لاعبين</option>
+                        <option value="6">⭐ 6 لاعبين</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-star"></i> نقاط الفوز</label>
+                    <select id="winningPoints" class="form-input premium-select">
+                        <option value="3">⚡ 3 نقاط - سريع</option>
+                        <option value="5">🎯 5 نقاط - قصير</option>
+                        <option value="10">🏅 10 نقاط - متوسط</option>
+                        <option value="15">🏆 15 نقطة - طويل</option>
+                        <option value="20">👑 20 نقطة - ماراثون</option>
+                        <option value="25">💎 25 نقطة - أسطوري</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-list"></i> الفئة</label>
+                    <select id="quizCategory" class="form-input premium-select">
+                        <option value="general">🌍 عامة</option>
+                        <option value="science">🔬 علوم</option>
+                        <option value="history">📚 تاريخ</option>
+                        <option value="sports">⚽ رياضة</option>
+                        <option value="entertainment">🎬 ترفيه</option>
+                        <option value="technology">💻 تكنولوجيا</option>
+                        <option value="geography">🗺️ جغرافيا</option>
+                        <option value="islamic">🕌 إسلامية</option>
+                        <option value="literature">📖 أدب</option>
+                        <option value="math">🔢 رياضيات</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-chart-line"></i> مستوى الصعوبة</label>
+                    <select id="quizDifficulty" class="form-input premium-select">
+                        <option value="easy">🟢 سهل - للمبتدئين</option>
+                        <option value="medium">🟡 متوسط - للخبراء</option>
+                        <option value="hard">🔴 صعب - للمحترفين</option>
+                        <option value="expert">💜 خبير - للأساطير</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-clock"></i> وقت الإجابة</label>
+                    <select id="answerTime" class="form-input premium-select">
+                        <option value="0">♾️ بدون حد زمني</option>
+                        <option value="10">⏰ 10 ثواني</option>
+                        <option value="15">⏱️ 15 ثانية</option>
+                        <option value="20">⏲️ 20 ثانية</option>
+                        <option value="30">🕐 30 ثانية</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-volume-up"></i> المؤثرات الصوتية</label>
+                    <select id="soundEffects" class="form-input premium-select">
+                        <option value="on">🔊 مفعلة</option>
+                        <option value="off">🔇 معطلة</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn btn-primary premium-btn" onclick="startQuiz()">
+                    <i class="fas fa-play"></i> بدء اللعبة
+                </button>
+                <button class="btn btn-secondary" onclick="closeModal('quizModal')">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- أضف هذا قبل نهاية container -->
+<div class="modal" id="quizGameModal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="quiz-game-container">
+            <div class="quiz-header">
+                <div class="quiz-timer" id="quizTimer" style="display: none;">
+                    <i class="fas fa-stopwatch"></i>
+                    <span id="timeLeft">15</span>
+                </div>
+                <h2 id="quizQuestion" class="question-text">السؤال يظهر هنا</h2>
+                <div class="quiz-progress">
+                    <div class="progress-info">
+                        <span id="quizProgress">السؤال 1 من 10</span>
+                        <span id="categoryDisplay" class="category-badge">عامة</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quizProgressBar"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-options" id="quizOptions">
+                <!-- الخيارات تظهر هنا -->
+            </div>
+            
+            <div class="quiz-players" id="quizPlayers">
+                <!-- معلومات اللاعبين تظهر هنا -->
+            </div>
+            
+            <div class="quiz-stats" id="quizStats">
+                <div class="stat-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>صحيحة: <span id="correctAnswers">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-times-circle"></i>
+                    <span>خاطئة: <span id="wrongAnswers">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-percentage"></i>
+                    <span>النسبة: <span id="successRate">0%</span></span>
+                </div>
+            </div>
+            
+            <div class="quiz-actions">
+                <button class="btn btn-secondary" onclick="pauseQuiz()" id="pauseBtn">
+                    <i class="fas fa-pause"></i> إيقاف مؤقت
+                </button>
+                <button class="btn btn-danger" onclick="endQuiz()">
+                    <i class="fas fa-stop"></i> إنهاء اللعبة
+                </button>
+                <button class="btn btn-primary hidden" id="nextQuestionBtn" onclick="nextQuestion()">
+                    <i class="fas fa-arrow-right"></i> السؤال التالي
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة النتيجة النهائية -->
+<div class="modal" id="resultsModal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header results-header">
+            <h2 class="modal-title"><i class="fas fa-trophy"></i> النتائج النهائية</h2>
+        </div>
+        <div class="results-content" id="resultsContent">
+            <!-- النتائج تظهر هنا -->
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="startQuizGame(); closeModal('resultsModal')">
+                <i class="fas fa-redo"></i> لعبة جديدة
+            </button>
+            <button class="btn btn-secondary" onclick="closeModal('resultsModal')">
+                <i class="fas fa-times"></i> إغلاق
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- أضف هذا في قسم الـ style -->
+<!-- أضف هذا في قسم الـ style -->
+<style>
+    .settings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 25px;
+    }
+    
+    .quiz-settings {
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .form-group {
+        background: rgba(255,255,255,0.08);
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .form-group:hover {
+        background: rgba(255,255,255,0.12);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #fff;
+        font-size: 14px;
+    }
+    
+    .form-label i {
+        margin-left: 8px;
+        color: #4facfe;
+    }
+    
+    .premium-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid rgba(255,255,255,0.2);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+    
+    .premium-select:focus {
+        border-color: #4facfe;
+        background: rgba(255,255,255,0.15);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+    }
+    
+    .premium-select option {
+        background: #2a2a2a;
+        color: #fff;
+        padding: 10px;
+    }
+    
+    .quiz-game-container {
+        padding: 25px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .quiz-header {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .quiz-timer {
+        position: absolute;
+        top: -10px;
+        right: 0;
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .question-text {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #fff;
+        line-height: 1.4;
+        padding: 20px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .quiz-progress {
+        margin-bottom: 25px;
+    }
+    
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .category-badge {
+        background: linear-gradient(135deg, #00f2fe, #00f2fe);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4facfe, #00f2fe);
+        border-radius: 10px;
+        transition: width 0.5s ease;
+    }
+    
+    .quiz-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    @media (max-width: 600px) {
+        .quiz-options {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .quiz-option {
+        background: rgba(255,255,255,0.1);
+        border: 2px solid rgba(255,255,255,0.2);
+        padding: 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .quiz-option::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
+        transition: left 0.3s;
+    }
+    
+    .quiz-option:hover::before {
+        left: 0;
+    }
+    
+    .quiz-option:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        border-color: #4facfe;
+    }
+    
+    .quiz-option.correct {
+        background: linear-gradient(135deg, rgba(76, 201, 240, 0.4), rgba(0, 242, 254, 0.4));
+        border-color: #4facfe;
+        animation: correctPulse 0.6s ease;
+    }
+    
+    .quiz-option.wrong {
+        background: linear-gradient(135deg, rgba(239, 35, 60, 0.4), rgba(255, 107, 107, 0.4));
+        border-color: #ff6b6b;
+        animation: wrongShake 0.6s ease;
+    }
+    
+    @keyframes correctPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes wrongShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    .quiz-players {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .quiz-player {
+        background: rgba(255,255,255,0.1);
+        padding: 18px;
+        border-radius: 12px;
+        text-align: center;
+        min-width: 140px;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .quiz-player.active {
+        border-color: #4facfe;
+        background: rgba(79, 172, 254, 0.2);
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+    }
+    
+    .player-name {
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    
+    .player-score {
+        font-size: 28px;
+        color: #4facfe;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .quiz-stats {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        background: rgba(255,255,255,0.1);
+        padding: 12px 20px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .stat-item i {
+        font-size: 16px;
+    }
+    
+    .stat-item:nth-child(1) i { color: #4facfe; }
+    .stat-item:nth-child(2) i { color: #ff6b6b; }
+    .stat-item:nth-child(3) i { color: #feca57; }
+    
+    .quiz-actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        min-width: 120px;
+        justify-content: center;
+    }
+    
+    .btn i {
+        font-size: 16px;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    
+    .premium-btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        font-size: 16px;
+        padding: 15px 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .premium-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #764ba2, #667eea);
+        transition: left 0.5s;
+    }
+    
+    .premium-btn:hover::before {
+        left: 0;
+    }
+    
+    .premium-btn span {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .form-actions {
+        padding: 25px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .results-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+    
+    .results-content {
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .winner-announcement {
+        font-size: 24px;
+        font-weight: 700;
+        color: #4facfe;
+        margin-bottom: 20px;
+        animation: celebration 1s ease-in-out;
+    }
+    
+    @keyframes celebration {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .final-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+    
+    .final-stat {
+        background: rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    
+    .hidden {
+        display: none !important;
+    }
+    
+    @media (max-width: 768px) {
+        .settings-grid {
+            grid-template-columns: 1fr;
+            padding: 20px;
+        }
+        
+        .quiz-game-container {
+            padding: 20px;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            padding: 15px;
+        }
+        
+        .quiz-players {
+            justify-content: center;
+        }
+        
+        .quiz-stats {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .quiz-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+</style>
+
+<!-- أضف هذا في قسم الـ script -->
+<script>
+    // متغيرات اللعبة المتطورة
+    let quizQuestions = [];
+    let currentQuestionIndex = 0;
+    let quizPlayers = [];
+    let currentPlayerIndex = 0;
+    let winningPoints = 10;
+    let quizCategory = 'general';
+    let quizDifficulty = 'easy';
+    let answerTimeLimit = 0;
+    let soundEffectsEnabled = true;
+    let gameTimer = null;
+    let timeLeft = 0;
+    let gamePaused = false;
+    let correctAnswersCount = 0;
+    let wrongAnswersCount = 0;
+    let gameStartTime = null;
+    
+    // أسئلة اللعبة الشاملة
+    const quizData = {
+        general: [
+            {
+                question: "ما هي عاصمة فرنسا؟",
+                options: ["لندن", "باريس", "روما", "برلين"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "كم عدد الكواكب في النظام الشمسي؟",
+                options: ["7", "8", "9", "10"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو أطول نهر في العالم؟",
+                options: ["النيل", "الأمازون", "الميسيسيبي", "الدانوب"],
+                answer: 0,
+                difficulty: "medium"
+            },
+            {
+                question: "في أي قارة تقع دولة البرازيل؟",
+                options: ["آسيا", "أفريقيا", "أمريكا الجنوبية", "أوروبا"],
+                answer: 2,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو أكبر محيط في العالم؟",
+                options: ["الأطلسي", "الهندي", "الهادئ", "المتجمد الشمالي"],
+                answer: 2,
+                difficulty: "medium"
+            },
+            {
+                question: "كم عدد القارات في العالم؟",
+                options: ["5", "6", "7", "8"],
+                answer: 2,
+                difficulty: "easy"
+            }
+        ],
+        science: [
+            {
+                question: "ما هو العنصر الكيميائي الذي رمزه 'O'؟",
+                options: ["ذهب", "أكسجين", "فضة", "حديد"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هي وحدة قياس التيار الكهربائي؟",
+                options: ["فولت", "أمبير", "واط", "أوم"],
+                answer: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "ما هو أسرع حيوان في العالم؟",
+                options: ["الفهد", "النسر", "الدولفين", "الأرنب"],
+                answer: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "كم عدد العظام في جسم الإنسان البالغ؟",
+                options: ["206", "215", "198", "220"],
+                answer: 0,
+                difficulty: "hard"
+            },
+            {
+                question: "ما هو الغاز الأكثر وفرة في الغلاف الجوي؟",
+                options: ["الأكسجين", "النيتروجين", "ثاني أكسيد الكربون", "الهيدروجين"],
+                answer: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "ما هي المادة الأصلب الموجودة طبيعياً؟",
+                options: ["الحديد", "الألماس", "الذهب", "البلاتين"],
+                answer: 1,
+                difficulty: "easy"
+            }
+        ],
+        history: [
+            {
+                question: "في أي عام هبط الإنسان على القمر لأول مرة؟",
+                options: ["1965", "1969", "1972", "1975"],
+                answer: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "من هو أول رئيس للولايات المتحدة الأمريكية؟",
+                options: ["توماس جيفرسون", "جورج واشنطن", "أبراهام لينكولن", "جون آدامز"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي عام انتهت الحرب العالمية الثانية؟",
+                options: ["1944", "1945", "1946", "1943"],
+                answer: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "من بنى الأهرامات الثلاثة في الجيزة؟",
+                options: ["الرومان", "الإغريق", "المصريون القدماء", "البابليون"],
+                answer: 2,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هي أقدم حضارة في التاريخ؟",
+                options: ["المصرية", "السومرية", "الصينية", "الهندية"],
+                answer: 1,
+                difficulty: "hard"
+            }
+        ],
+        sports: [
+            {
+                question: "في أي رياضة يستخدم المضرب والكرة الصفراء؟",
+                options: ["كرة القدم", "التنس", "الجولف", "الكريكيت"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "كم عدد اللاعبين في فريق كرة القدم؟",
+                options: ["10", "11", "12", "9"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي دولة أقيمت أولمبياد 2020؟",
+                options: ["الصين", "اليابان", "كوريا الجنوبية", "أستراليا"],
+                answer: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "ما هي الرياضة التي تُلعب في ويمبلدون؟",
+                options: ["كرة القدم", "التنس", "الجولف", "الكريكيت"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "كم عدد الحلقات في شعار الألعاب الأولمبية؟",
+                options: ["4", "5", "6", "7"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي رياضة يُستخدم مصطلح 'هول إن وان'؟",
+                options: ["التنس", "البيسبول", "الجولف", "كرة السلة"],
+                answer: 2,
+                difficulty: "medium"
+            }
+        ],
+        entertainment: [
+            {
+                question: "من هو ملك البوب؟",
+                options: ["مايكل جاكسون", "إلتون جون", "جاستن بيبر", "برونو مارس"],
+                answer: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو اسم المسلسل الكوري الشهير عن الألعاب؟",
+                options: ["لعبة الحبار", "الطائر الأزرق", "ملكة الجنوب", "الورثة"],
+                answer: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "من أخرج فيلم 'تايتانيك'؟",
+                options: ["ستيفن سبيلبرغ", "جيمس كاميرون", "مارتن سكورسيزي", "كريستوفر نولان"],
+                answer: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "ما هو اسم الساحر الشهير في سلسلة كتب وأفلام هاري بوتر؟",
+                options: ["هاري بوتر", "رون ويزلي", "هيرمايون غرانجر", "دمبلدور"],
+                answer: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي عام تم إنتاج فيلم 'أفاتار' الأول؟",
+                options: ["2007", "2008", "2009", "2010"],
+                answer: 2,
+                difficulty: "hard"
+            }
+        ],
+        technology: [
+            {
+                question: "من هو مؤسس شركة مايكروسوفت؟",
+                options: ["ستيف جوبز", "بيل غيتس", "مارك زوكربيرغ", "إيلون ماسك"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو اختصار 'WWW'؟",
+                options: ["World Wide Web", "World Wild Web", "World War Web", "World Web Wide"],
+                answer: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي عام تم إطلاق أول iPhone؟",
+                options: ["2005", "2006", "2007", "2008"],
+                answer: 2,
+                difficulty: "medium"
+            },
+            {
+                question: "ما هو اسم أول شبكة اجتماعية على الإنترنت؟",
+                options: ["فيسبوك", "تويتر", "SixDegrees", "ماي سبيس"],
+                answer: 2,
+                difficulty: "hard"
+            },
+            {
+                question: "ما هي وحدة قياس سرعة المعالج؟",
+                options: ["بايت", "هرتز", "بت", "وات"],
+                answer: 1,
+                difficulty: "medium"
+            }
+        ],
+        geography: [
+            {
+                question: "ما هي أكبر دولة في العالم من حيث المساحة؟",
+                options: ["الصين", "كندا", "روسيا", "الولايات المتحدة"],
+                answer: 2,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هي عاصمة أستراليا؟",
+                options: ["سيدني", "ملبورن", "كانبرا", "بريسبان"],
+                answer: 2,
+                difficulty: "medium"
+            },
+            {
+                question: "في أي قارة تقع دولة المغرب؟",
+                options: ["آسيا", "أفريقيا", "أوروبا", "أمريكا الشمالية"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو أعلى جبل في العالم؟",
+                options: ["K2", "إيفرست", "كانشينجونغا", "لوتسي"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هي أصغر دولة في العالم؟",
+                options: ["موناكو", "ناورو", "الفاتيكان", "ليختنشتاين"],
+                answer: 2,
+                difficulty: "medium"
+            }
+        ],
+        islamic: [
+            {
+                question: "كم عدد أركان الإسلام؟",
+                options: ["4", "5", "6", "7"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي عام هجري تم فتح مكة؟",
+                options: ["6", "7", "8", "9"],
+                answer: 2,
+                difficulty: "medium"
+            },
+            {
+                question: "كم عدد سور القرآن الكريم؟",
+                options: ["110", "114", "115", "120"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هي أطول سورة في القرآن الكريم؟",
+                options: ["البقرة", "آل عمران", "النساء", "المائدة"],
+                answer: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "في أي مدينة وُلد الرسول محمد صلى الله عليه وسلم؟",
+                options: ["المدينة", "مكة", "الطائف", "جدة"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "كم عدد الصلوات المفروضة في اليوم؟",
+                options: ["3", "4", "5", "6"],
+                answer: 2,
+                difficulty: "easy"
+            }
+        ],
+        literature: [
+            {
+                question: "من كتب رواية 'مئة عام من العزلة'؟",
+                options: ["غابرييل غارسيا ماركيز", "خورخي لويس بورخيس", "إيزابيل الليندي", "ماريو فارغاس يوسا"],
+                answer: 0,
+                difficulty: "hard"
+            },
+            {
+                question: "من هو شاعر الرسول صلى الله عليه وسلم؟",
+                options: ["حسان بن ثابت", "كعب بن مالك", "عبد الله بن رواحة", "الأعشى"],
+                answer: 0,
+                difficulty: "medium"
+            },
+            {
+                question: "من كتب رواية 'الأسود يليق بك'؟",
+                options: ["أحلام مستغانمي", "نوال السعداوي", "فاطمة المرنيسي", "رضوى عاشور"],
+                answer: 0,
+                difficulty: "medium"
+            },
+            {
+                question: "ما هو اسم ملحمة هوميروس الشهيرة؟",
+                options: ["الإلياذة", "الأوديسة", "الإنيادة", "المهابهاراتا"],
+                answer: 0,
+                difficulty: "medium"
+            }
+        ],
+        math: [
+            {
+                question: "ما هو ناتج 8 × 7؟",
+                options: ["54", "56", "58", "60"],
+                answer: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو الجذر التربيعي للعدد 64؟",
+                options: ["6", "7", "8", "9"],
+                answer: 2,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هي قيمة π (باي) تقريباً؟",
+                options: ["3.14", "3.16", "3.18", "3.20"],
+                answer: 0,
+                difficulty: "medium"
+            },
+            {
+                question: "كم عدد الأضلاع في الشكل الثماني؟",
+                options: ["6", "7", "8", "9"],
+                answer: 2,
+                difficulty: "easy"
+            },
+            {
+                question: "ما هو ناتج 15% من 200؟",
+                options: ["25", "30", "35", "40"],
+                answer: 1,
+                difficulty: "medium"
+            }
+        ]
+    };
+    
+    // أسماء اللاعبين العشوائية
+    const playerNames = [
+        "أحمد المتفوق", "فاطمة الذكية", "محمد العبقري", "عائشة المبدعة",
+        "علي الخبير", "خديجة الماهرة", "عمر الفطين", "زينب الألمعية",
+        "حسن الذكي", "مريم الفهيمة", "يوسف العارف", "سارة الحكيمة"
+    ];
+
+     // المؤثرات الصوتية
+    function playSound(type) {
+        if (!soundEffectsEnabled) return;
+        
+        // في تطبيق حقيقي، يمكن تشغيل ملفات صوتية
+        if (type === 'correct') {
+            console.log('🎵 صوت إجابة صحيحة');
+        } else if (type === 'wrong') {
+            console.log('🎵 صوت إجابة خاطئة');
+        } else if (type === 'win') {
+            console.log('🎵 صوت فوز');
+        } else if (type === 'tick') {
+            console.log('🎵 صوت تكتكة');
+        }
+    }
+    
+    // بدء لعبة الأسئلة
+    function startQuizGame() {
+        showModal('quizModal');
+        resetGameStats();
+    }
+    
+    
+      // إعادة تعيين إحصائيات اللعبة
+    function resetGameStats() {
+        correctAnswersCount = 0;
+        wrongAnswersCount = 0;
+        currentQuestionIndex = 0;
+        currentPlayerIndex = 0;
+        gamePaused = false;
+        gameStartTime = null;
+    }
+    
+    // بدء اللعبة مع الإعدادات المختارة
+    function startQuiz() {
+        const playersCount = parseInt(document.getElementById('playersCount').value);
+        winningPoints = parseInt(document.getElementById('winningPoints').value);
+        quizCategory = document.getElementById('quizCategory').value;
+        quizDifficulty = document.getElementById('quizDifficulty').value;
+        answerTimeLimit = parseInt(document.getElementById('answerTime').value);
+        soundEffectsEnabled = document.getElementById('soundEffects').value === 'on';
+        
+        // إنشاء اللاعبين مع أسماء عشوائية
+        quizPlayers = [];
+        const shuffledNames = shuffleArray([...playerNames]);
+        
+        for (let i = 0; i < playersCount; i++) {
+            quizPlayers.push({
+                name: shuffledNames[i] || `اللاعب ${i + 1}`,
+                score: 0,
+                correctAnswers: 0,
+                wrongAnswers: 0,
+                averageTime: 0
+            });
+        }
+        
+        // تحضير الأسئلة
+        prepareQuestions();
+        
+        // إخفاء نموذج الإعدادات وإظهار نموذج اللعبة
+        closeModal('quizModal');
+        showModal('quizGameModal');
+        
+        // بدء السؤال الأول
+        gameStartTime = new Date();
+        currentQuestionIndex = 0;
+        currentPlayerIndex = 0;
+        showQuestion();
+        updateGameStats();
+    }
+    
+    // تحضير الأسئلة حسب الفئة والمستوى
+    function prepareQuestions() {
+        let allQuestions = [...quizData[quizCategory]];
+        
+        // تصفية الأسئلة حسب مستوى الصعوبة
+        if (quizDifficulty !== 'expert') {
+            allQuestions = allQuestions.filter(q => {
+                if (quizDifficulty === 'easy') return q.difficulty === 'easy';
+                if (quizDifficulty === 'medium') return q.difficulty === 'easy' || q.difficulty === 'medium';
+                if (quizDifficulty === 'hard') return q.difficulty !== 'expert';
+                return true;
+            });
+        }
+        
+        // خلط الأسئلة عشوائياً
+        quizQuestions = shuffleArray(allQuestions);
+        
+        // تحديد عدد الأسئلة حسب الصعوبة
+        let questionCount = 10;
+        if (quizDifficulty === 'easy') questionCount = 8;
+        else if (quizDifficulty === 'medium') questionCount = 12;
+        else if (quizDifficulty === 'hard') questionCount = 15;
+        else if (quizDifficulty === 'expert') questionCount = 20;
+        
+        quizQuestions = quizQuestions.slice(0, Math.min(questionCount, quizQuestions.length));
+    }
+    
+    // عرض السؤال الحالي
+    function showQuestion() {
+        if (gamePaused) return;
+        
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        
+        // عرض السؤال
+        document.getElementById('quizQuestion').textContent = currentQuestion.question;
+        
+        // عرض تقدم اللعبة
+        document.getElementById('quizProgress').textContent = 
+            `السؤال ${currentQuestionIndex + 1} من ${quizQuestions.length}`;
+        document.getElementById('quizProgressBar').style.width = 
+            `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`;
+        
+        // عرض الفئة
+        const categoryNames = {
+            'general': '🌍 عامة',
+            'science': '🔬 علوم',
+            'history': '📚 تاريخ',
+            'sports': '⚽ رياضة',
+            'entertainment': '🎬 ترفيه',
+            'technology': '💻 تكنولوجيا',
+            'geography': '🗺️ جغرافيا',
+            'islamic': '🕌 إسلامية',
+            'literature': '📖 أدب',
+            'math': '🔢 رياضيات'
+        };
+        document.getElementById('categoryDisplay').textContent = categoryNames[quizCategory];
+        
+        // عرض الخيارات
+        const optionsContainer = document.getElementById('quizOptions');
+        optionsContainer.innerHTML = '';
+        
+        currentQuestion.options.forEach((option, index) => {
+            const optionElement = document.createElement('div');
+            optionElement.className = 'quiz-option';
+            optionElement.textContent = option;
+            optionElement.onclick = function() {
+                if (!gamePaused) checkAnswer(index);
+            };
+            optionsContainer.appendChild(optionElement);
+        });
+        
+        // عرض معلومات اللاعبين
+        updatePlayersDisplay();
+        
+        // إخفاء زر السؤال التالي
+        document.getElementById('nextQuestionBtn').classList.add('hidden');
+        
+        // بدء العد التنازلي إذا كان مفعلاً
+        if (answerTimeLimit > 0) {
+            startTimer();
+        } else {
+            document.getElementById('quizTimer').style.display = 'none';
+        }
+    }
+    
+    // بدء العد التنازلي
+    function startTimer() {
+        const timerElement = document.getElementById('quizTimer');
+        const timeLeftElement = document.getElementById('timeLeft');
+        
+        timerElement.style.display = 'block';
+        timeLeft = answerTimeLimit;
+        timeLeftElement.textContent = timeLeft;
+        
+        if (gameTimer) clearInterval(gameTimer);
+        
+        gameTimer = setInterval(() => {
+            if (gamePaused) return;
+            
+            timeLeft--;
+            timeLeftElement.textContent = timeLeft;
+            
+            if (timeLeft <= 5) {
+                timerElement.style.animation = 'pulse 0.5s infinite';
+                playSound('tick');
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(gameTimer);
+                timeOut();
+            }
+        }, 1000);
+    }
+    
+    // انتهاء الوقت
+    function timeOut() {
+        const options = document.querySelectorAll('.quiz-option');
+        options.forEach(option => {
+            option.style.pointerEvents = 'none';
+            option.style.opacity = '0.5';
+        });
+        
+        // إظهار الإجابة الصحيحة
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        options[currentQuestion.answer].classList.add('correct');
+        
+        // تحديث الإحصائيات
+        wrongAnswersCount++;
+        quizPlayers[currentPlayerIndex].wrongAnswers++;
+        
+        // تبديل اللاعب
+        currentPlayerIndex = (currentPlayerIndex + 1) % quizPlayers.length;
+        
+        // عرض زر السؤال التالي
+        setTimeout(() => {
+            document.getElementById('nextQuestionBtn').classList.remove('hidden');
+        }, 1500);
+        
+        updatePlayersDisplay();
+        updateGameStats();
+        playSound('wrong');
+    }
+    
+    // التحقق من الإجابة
+    function checkAnswer(selectedIndex) {
+        if (gameTimer) clearInterval(gameTimer);
+        
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        const options = document.querySelectorAll('.quiz-option');
+        
+        // تعطيل جميع الخيارات
+        options.forEach(option => {
+            option.style.pointerEvents = 'none';
+        });
+        
+        // إخفاء المؤقت
+        document.getElementById('quizTimer').style.display = 'none';
+        
+        // تحديد الإجابة الصحيحة والخاطئة
+        options[currentQuestion.answer].classList.add('correct');
+        if (selectedIndex !== currentQuestion.answer) {
+            options[selectedIndex].classList.add('wrong');
+        }
+        
+        // تحديث النقاط والإحصائيات
+        if (selectedIndex === currentQuestion.answer) {
+            quizPlayers[currentPlayerIndex].score++;
+            quizPlayers[currentPlayerIndex].correctAnswers++;
+            correctAnswersCount++;
+            playSound('correct');
+            
+            // التحقق إذا وصل اللاعب لنقاط الفوز
+            if (quizPlayers[currentPlayerIndex].score >= winningPoints) {
+                setTimeout(() => {
+                    endQuiz();
+                }, 1500);
+                return;
+            }
+        } else {
+            quizPlayers[currentPlayerIndex].wrongAnswers++;
+            wrongAnswersCount++;
+            playSound('wrong');
+        }
+        
+        // تبديل اللاعب
+        currentPlayerIndex = (currentPlayerIndex + 1) % quizPlayers.length;
+        
+        // عرض زر السؤال التالي
+        setTimeout(() => {
+            document.getElementById('nextQuestionBtn').classList.remove('hidden');
+        }, 1500);
+        
+        updatePlayersDisplay();
+        updateGameStats();
+    }
+    
+    // الانتقال للسؤال التالي
+    function nextQuestion() {
+        currentQuestionIndex++;
+        
+        if (currentQuestionIndex < quizQuestions.length) {
+            showQuestion();
+        } else {
+            endQuiz();
+        }
+    }
+    
+    // إيقاف/استئناف اللعبة
+    function pauseQuiz() {
+        const pauseBtn = document.getElementById('pauseBtn');
+        
+        if (gamePaused) {
+            gamePaused = false;
+            pauseBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
+            if (answerTimeLimit > 0 && timeLeft > 0) {
+                startTimer();
+            }
+        } else {
+            gamePaused = true;
+            pauseBtn.innerHTML = '<i class="fas fa-play"></i> استئناف';
+            if (gameTimer) clearInterval(gameTimer);
+        }
+    }
+    
+    // تحديث عرض معلومات اللاعبين
+    function updatePlayersDisplay() {
+        const playersContainer = document.getElementById('quizPlayers');
+        playersContainer.innerHTML = '';
+        
+        quizPlayers.forEach((player, index) => {
+            const playerElement = document.createElement('div');
+            playerElement.className = `quiz-player ${index === currentPlayerIndex ? 'active' : ''}`;
+            
+            const successRate = player.correctAnswers + player.wrongAnswers > 0 ? 
+                Math.round((player.correctAnswers / (player.correctAnswers + player.wrongAnswers)) * 100) : 0;
+            
+            playerElement.innerHTML = `
+                <div class="player-name">${player.name}</div>
+                <div class="player-score">${player.score}</div>
+                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">
+                    ✅ ${player.correctAnswers} | ❌ ${player.wrongAnswers} | 📊 ${successRate}%
+                </div>
+            `;
+            
+            playersContainer.appendChild(playerElement);
+        });
+    }
+    
+    // تحديث إحصائيات اللعبة
+    function updateGameStats() {
+        document.getElementById('correctAnswers').textContent = correctAnswersCount;
+        document.getElementById('wrongAnswers').textContent = wrongAnswersCount;
+        
+        const totalAnswers = correctAnswersCount + wrongAnswersCount;
+        const successRate = totalAnswers > 0 ? Math.round((correctAnswersCount / totalAnswers) * 100) : 0;
+        document.getElementById('successRate').textContent = successRate + '%';
+    }
+    
+    // إنهاء اللعبة وعرض النتائج
+    function endQuiz(customMessage) {
+        if (gameTimer) clearInterval(gameTimer);
+        
+        // إغلاق نافذة اللعبة
+        closeModal('quizGameModal');
+        
+        // تحديد الفائز أو المتعادلين
+        let winners = [];
+        let maxScore = Math.max(...quizPlayers.map(p => p.score));
+        
+        // البحث عن الفائزين
+        if (maxScore >= winningPoints) {
+            winners = quizPlayers.filter(p => p.score >= winningPoints);
+        } else {
+            winners = quizPlayers.filter(p => p.score === maxScore);
+        }
+        
+        // حساب مدة اللعبة
+        const gameEndTime = new Date();
+        const gameDuration = gameStartTime ? Math.round((gameEndTime - gameStartTime) / 1000) : 0;
+        const minutes = Math.floor(gameDuration / 60);
+        const seconds = gameDuration % 60;
+        
+        // عرض النتائج
+        displayResults(winners, maxScore, minutes, seconds, customMessage);
+        
+        playSound('win');
+    }
+    
+    // عرض نافذة النتائج
+    function displayResults(winners, maxScore, minutes, seconds, customMessage) {
+        const resultsContent = document.getElementById('resultsContent');
+        
+        let winnerText = '';
+        if (customMessage) {
+            winnerText = customMessage;
+        } else if (winners.length === 1) {
+            winnerText = `🎉 مبروك ${winners[0].name}! 
+                        <br>أنت الفائز بـ ${maxScore} نقطة! 🏆`;
+        } else if (winners.length > 1) {
+            winnerText = `🤝 تعادل بين: ${winners.map(w => w.name).join(' و ')}
+                        <br>بـ ${maxScore} نقطة لكل منهم! 🏆`;
+        } else {
+            winnerText = `🎮 انتهت اللعبة!
+                        <br>أعلى نقاط: ${maxScore} نقطة 📊`;
+        }
+        
+        const totalQuestions = currentQuestionIndex;
+        const overallSuccessRate = totalQuestions > 0 ? 
+            Math.round((correctAnswersCount / totalQuestions) * 100) : 0;
+        
+        resultsContent.innerHTML = `
+            <div class="winner-announcement">${winnerText}</div>
+            
+            <div class="final-stats">
+                <div class="final-stat">
+                    <div style="font-size: 24px; color: #4facfe;">⏱️</div>
+                    <div>مدة اللعبة</div>
+                    <div style="font-weight: bold;">${minutes}:${seconds.toString().padStart(2, '0')}</div>
+                </div>
+                <div class="final-stat">
+                    <div style="font-size: 24px; color: #4facfe;">❓</div>
+                    <div>إجمالي الأسئلة</div>
+                    <div style="font-weight: bold;">${totalQuestions}</div>
+                </div>
+                <div class="final-stat">
+                    <div style="font-size: 24px; color: #4facfe;">✅</div>
+                    <div>إجابات صحيحة</div>
+                    <div style="font-weight: bold;">${correctAnswersCount}</div>
+                </div>
+                <div class="final-stat">
+                    <div style="font-size: 24px; color: #4facfe;">📊</div>
+                    <div>معدل النجاح</div>
+                    <div style="font-weight: bold;">${overallSuccessRate}%</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <h3 style="color: #4facfe; margin-bottom: 15px;">🏅 ترتيب اللاعبين</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    ${quizPlayers
+                        .sort((a, b) => b.score - a.score)
+                        .map((player, index) => {
+                            const playerSuccessRate = (player.correctAnswers + player.wrongAnswers) > 0 ? 
+                                Math.round((player.correctAnswers / (player.correctAnswers + player.wrongAnswers)) * 100) : 0;
+                            const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                            
+                            return `
+                                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <span style="font-size: 20px;">${medal}</span>
+                                        <span style="font-weight: bold;">${player.name}</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-size: 18px; font-weight: bold; color: #4facfe;">${player.score} نقطة</div>
+                                        <div style="font-size: 12px; opacity: 0.8;">
+                                            ✅ ${player.correctAnswers} | ❌ ${player.wrongAnswers} | 📊 ${playerSuccessRate}%
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                </div>
+            </div>
+        `;
+        
+        showModal('resultsModal');
+    }
+    
+    // دالة لخلط المصفوفة عشوائياً
+    function shuffleArray(array) {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
+    }
+</script>
 
         <!-- Features Section -->
         <section class="features-section">
@@ -2065,28 +3496,17 @@ function generateBotResponse(message) {
     // Convert message to lowercase for easier matching
     const lowerMessage = message.toLowerCase();
     
-    // Check language and respond accordingly
+    // Check if message is not in Arabic
     const isNonArabic = /[a-z]/.test(message);
     
+    // Respond in the same language as the user
     if (isNonArabic) {
         response = generateEnglishResponse(message);
-    } else {
-        // Handle Arabic responses
-        response = generateArabicResponse(message);
+        addBotMessage(response);
+        return;
     }
     
-    addBotMessage(response);
-    
-    if (code) {
-        addCodeMessage(code, lowerMessage.includes('لوا') ? 'lua' : 
-                         lowerMessage.includes('html') ? 'html' : 'css');
-    }
-}
-
-function generateArabicResponse(message) {
-    const lowerMessage = message.toLowerCase();
-    
-    // Handle greetings
+    // Handle greetings and general questions in Arabic
     if (lowerMessage.includes('السلام عليكم') || lowerMessage.includes('سلام') || 
         lowerMessage.includes('مرحبا') || lowerMessage.includes('اهلا') || 
         lowerMessage.includes('مرحباً') || lowerMessage.includes('أهلا')) {
@@ -2096,26 +3516,83 @@ function generateArabicResponse(message) {
             "أهلاً وسهلاً! كيف يمكنني خدمتك؟",
             "وعليكم السلام! كيف حالك اليوم؟"
         ];
-        return greetings[Math.floor(Math.random() * greetings.length)];
+        response = greetings[Math.floor(Math.random() * greetings.length)];
+        addBotMessage(response);
+        return;
+    }
+
+        if (lowerMessage.includes('ما هو مؤسس موقع بيكسي')) {
+        const greetings = [
+            "المؤسس موقع PixyAi هو علي صلاح محمد الواوان الشمري"
+                  ];
+        response = greetings[Math.floor(Math.random() * greetings.length)];
+        addBotMessage(response);
+        return;
+    }
+
+    
+    else if (lowerMessage.includes('كيف حالك') || lowerMessage.includes('اخبارك')) {
+        const replies = [
+            "بخير والحمد لله، كيف يمكنني مساعدتك؟",
+            "أنا بخير، شكراً لسؤالك! كيف أساعدك اليوم؟",
+            "الحمد لله دائماً بخير، كيف حالك أنت؟",
+            "أنا مجرد برنامج ولكنني أعمل بشكل جيد :) كيف يمكنني مساعدتك؟"
+        ];
+        response = replies[Math.floor(Math.random() * replies.length)];
+        addBotMessage(response);
+        return;
+    }
+    else if (lowerMessage.includes('صباح الخير') || lowerMessage.includes('مساء الخير')) {
+        const time = new Date().getHours();
+        if (time < 12) {
+            response = "صباح الخير! يوم سعيد لك. كيف يمكنني مساعدتك؟";
+        } else if (time < 18) {
+            response = "مساء الخير! كيف يمكنني مساعدتك اليوم؟";
+        } else {
+            response = "مساء الخير! أتمنى لك مساءً سعيداً. كيف أساعدك؟";
+        }
+        addBotMessage(response);
+        return;
     }
     
-    // Handle general questions
-    if (lowerMessage.includes('؟') || lowerMessage.includes('ما') || 
-        lowerMessage.includes('كيف') || lowerMessage.includes('لماذا') || 
-        lowerMessage.includes('أين') || lowerMessage.includes('متى')) {
-        return getGeneralKnowledgeAnswer(message);
+    // باقي الكود كما هو...
+    // Check for Lua requests
+    if (lowerMessage.includes('لوا') || lowerMessage.includes('lua')) {
+        // ... (الكود الحالي للرد على طلبات لوا)
+    } 
+    // Check for HTML requests
+    else if (lowerMessage.includes('html') || lowerMessage.includes('إتش تي إم إل') || lowerMessage.includes('صفحة ويب')) {
+        // ... (الكود الحالي للرد على طلبات HTML)
+    }
+    // Check for CSS requests
+    else if (lowerMessage.includes('css') || lowerMessage.includes('سي إس إس') || lowerMessage.includes('تنسيق')) {
+        // ... (الكود الحالي للرد على طلبات CSS)
+    }
+    // General knowledge questions
+    else if (lowerMessage.includes('؟') || lowerMessage.includes('ما') || lowerMessage.includes('كيف') || 
+             lowerMessage.includes('لماذا') || lowerMessage.includes('أين') || lowerMessage.includes('متى')) {
+        response = getGeneralKnowledgeAnswer(message);
+        addBotMessage(response);
+    }
+    // If no specific request
+    else {
+        response = getGeneralResponse(message);
+        addBotMessage(response);
     }
     
-    // Default response for other messages
-    return "أنا هنا لمساعدتك في أي موضوع. هل يمكنك توضيح طلبك أكثر؟";
+    if (code) {
+        addCodeMessage(code, lowerMessage.includes('لوا') ? 'lua' : 
+                             lowerMessage.includes('html') ? 'html' : 'css');
+    }
 }
 
 
 // Update English response function similarly
 function generateEnglishResponse(message) {
     const lowerMessage = message.toLowerCase();
+    let response = '';
     
-    // Handle greetings
+    // Handle English greetings
     if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || 
         lowerMessage.includes('hey') || lowerMessage.includes('greetings')) {
         const greetings = [
@@ -2126,140 +3603,71 @@ function generateEnglishResponse(message) {
         ];
         return greetings[Math.floor(Math.random() * greetings.length)];
     }
-    
-    // Handle general questions
-    if (lowerMessage.includes('?') || lowerMessage.includes('what') || 
-        lowerMessage.includes('how') || lowerMessage.includes('why') || 
-        lowerMessage.includes('when') || lowerMessage.includes('where')) {
-        return getEnglishGeneralAnswer(message);
+    else if (lowerMessage.includes('how are you') || lowerMessage.includes("how's it going")) {
+        const replies = [
+            "I'm just a program, but I'm functioning well! How can I help you?",
+            "I don't have feelings, but I'm ready to assist you!",
+            "All systems are operational! How about you?",
+            "I'm doing great! What can I do for you today?"
+        ];
+        return replies[Math.floor(Math.random() * replies.length)];
     }
-    
-    // Default response for other messages
-    return "I'm here to help with any topic. Could you clarify your request?";
-}
-
-function getEnglishGeneralAnswer(question) {
-    const lowerQuestion = question.toLowerCase();
-    
-    // Extensive knowledge base in English
-    const knowledgeBase = {
-        // General
-        "what is your name": "I'm PixyAi Pro, your smart programming assistant!",
-        "who created you": "I was developed to help programmers and developers in their daily work",
-        
-        // Technology
-        "what is programming": "Programming is the process of creating instructions for computers to execute",
-        "what is artificial intelligence": "AI is the simulation of human intelligence in machines programmed to think like humans",
-        
-        // Science
-        "how are clouds formed": "Clouds form when water evaporates from the surface and rises to cooler altitudes where it condenses",
-        "what is gravity": "Gravity is the force that attracts objects toward each other, it's what keeps us grounded on Earth",
-        
-        // History
-        "who discovered america": "Christopher Columbus is credited with discovering America in 1492",
-        "when did world war ii end": "World War II ended in 1945",
-        
-        // Math
-        "what is a prime number": "A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself",
-        "what is pythagorean theorem": "In a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides"
-    };
-    
-    // Find the best match
-    for (const [key, value] of Object.entries(knowledgeBase)) {
-        if (lowerQuestion.includes(key.toLowerCase())) {
-            return value;
+    else if (lowerMessage.includes('good morning') || lowerMessage.includes('good afternoon') || 
+             lowerMessage.includes('good evening')) {
+        const time = new Date().getHours();
+        if (time < 12) {
+            return "Good morning! Have a wonderful day. How can I help?";
+        } else if (time < 18) {
+            return "Good afternoon! How can I assist you today?";
+        } else {
+            return "Good evening! I hope you're having a pleasant evening. How may I help?";
         }
     }
     
-    // Fallback responses
-    const fallbackResponses = [
-        "That's an interesting question! I don't have specific information on that topic. Can I help with something else?",
-        "I'm more specialized in programming and tech fields, but regarding your question... it would require more research.",
-        "I don't have an exact answer for that right now, but I can help with other topics.",
-        "That's outside my main area of expertise, but I'm constantly learning. Do you have other questions?"
-    ];
-    
-    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+    // Programming related questions
+    if (lowerMessage.includes('lua') || lowerMessage.includes('code') || 
+        lowerMessage.includes('html') || lowerMessage.includes('css') || 
+        lowerMessage.includes('programming')) {
+        return generateProgrammingResponse(message);
+    }
+    // General questions
+    else if (lowerMessage.includes('?') || lowerMessage.includes('what') || 
+             lowerMessage.includes('how') || lowerMessage.includes('why') || 
+             lowerMessage.includes('when') || lowerMessage.includes('where')) {
+        return getEnglishGeneralAnswer(message);
+    }
+    // Default response
+    else {
+        return getGeneralResponse(message);
+    }
 }
 
 // Get general knowledge answer
-// موسوعة معرفية واسعة بالعربية
-const knowledgeBase = {
-    // معلومات عامة
-    "ما هو اسمك": "أنا PixyAi Pro، مساعدك الذكي في البرمجة والتقنية!",
-    "من صنعك": "تم تطويري لمساعدة المبرمجين والمطورين في أعمالهم اليومية",
+function getGeneralKnowledgeAnswer(question) {
+    const lowerQuestion = question.toLowerCase();
     
-    // جغرافيا
-    "كم درجة الحرارة في الكويت": "درجة الحرارة في الكويت تتراوح بين 45°م صيفاً و8°م شتاءً في المتوسط",
-    "ما هي عاصمة فرنسا": "باريس هي العاصمة الجميلة لفرنسا",
-    "ما هي أكبر دولة في العالم": "روسيا هي أكبر دولة في العالم من حيث المساحة",
-    "ما هي أعلى قمة في العالم": "قمة إفرست هي أعلى قمة في العالم بارتفاع 8848 متراً",
-    
-    // علوم
-    "كيف تتكون السحب": "تتكون السحب عندما يتبخر الماء من الأرض ويصعد إلى الأعلى حيث يبرد ويتكثف",
-    "ما هي الجاذبية": "الجاذبية هي القوة التي تجذب الأجسام نحو بعضها البعض، وهي ما يجعلنا ملتصقين بالأرض",
-    "ما هو التركيب الضوئي": "التركيب الضوئي هو عملية تقوم بها النباتات لتحويل ضوء الشمس إلى طاقة كيميائية",
-    "كم عدد العظام في جسم الإنسان": "يحتوي جسم الإنسان البالغ على 206 عظمة",
-    
-    // تاريخ
-    "من اكتشف أمريكا": "كريستوفر كولومبوس هو الذي اكتشف أمريكا عام 1492",
-    "متى انتهت الحرب العالمية الثانية": "انتهت الحرب العالمية الثانية في عام 1945",
-    "من هو أول رائد فضاء": "يوري جاجارين كان أول إنسان يصل إلى الفضاء عام 1961",
-    "متى تأسست السعودية": "تأسست المملكة العربية السعودية عام 1932م",
-    
-    // رياضيات
-    "ما هو العدد الأولي": "العدد الأولي هو عدد طبيعي أكبر من 1 ليس له قواسم غير نفسه والواحد",
-    "ما هي نظرية فيثاغورث": "في المثلث القائم، مربع الوتر يساوي مجموع مربعي الضلعين الآخرين",
-    "ما هو العدد الذهبي": "العدد الذهبي هو (1+√5)/2 ≈ 1.618 ويظهر كثيراً في الفن والطبيعة",
-    
-    // تقنية
-    "ما هي لغة البرمجة": "لغات البرمجة هي وسيلة للتواصل مع الحواسيب وتوجيهها لأداء مهام محددة",
-    "ما هو الذكاء الاصطناعي": "الذكاء الاصطناعي هو محاكاة الذكاء البشري في الآلات المبرمجة للتفكير مثل البشر",
-    "ما هو الفرق بين HTTP و HTTPS": "HTTPS هو النسخة الآمنة من HTTP حيث يتم تشفير البيانات المتبادلة",
-    
-    // ثقافة عامة
-    "من هو مؤلف كتاب الشفرة": "دان براون هو مؤلف رواية شفرة دافنشي الشهيرة",
-    "ما هي عملة اليابان": "الين الياباني هو العملة الرسمية لليابان",
-    "كم عدد أيام السنة الكبيسة": "السنة الكبيسة لها 366 يوماً حيث يضاف يوم إلى فبراير كل 4 سنوات",
-    
-    // طب وصحة
-    "ما هو معدل ضغط الدم الطبيعي": "المعدل الطبيعي لضغط الدم هو حوالي 120/80 ملم زئبق",
-    "ما هي أعراض الإنفلونزا": "تشمل الحمى، السعال، التهاب الحلق، آلام العضلات والتعب",
-    "كم لتر من الماء يجب شربه يومياً": "يوصى بشرب حوالي 2-3 لترات يومياً للشخص البالغ",
-    
-    // اقتصاد
-    "ما هي أكبر شركة في العالم": "أبل وسامسونج وأمازون من بين أكبر الشركات حسب القيمة السوقية",
-    "ما هو الناتج المحلي الإجمالي": "هو القيمة السوقية لكل السلع والخدمات المنتجة في بلد ما خلال سنة",
-    
-    // دين
-    "كم عدد أركان الإسلام": "أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، والحج",
-    "ما هي آخر سورة في القرآن": "سورة الناس هي آخر سورة في المصحف الشريف",
-    
-    // رياضة
-    "من هو هداف كأس العالم التاريخي": "ميروسلاف كلوزه الألماني برصيد 16 هدفاً في كأس العالم",
-    "كم عدد لاعبي كرة القدم": "11 لاعباً لكل فريق في كرة القدم",
-    
-    // حيوانات
-    "ما هو أسرع حيوان في العالم": "الفهد الصياد هو أسرع حيوان بري بسرعة تصل إلى 120 كم/ساعة",
-    "كم تعيش السلحفاة": "بعض أنواع السلاحف يمكن أن تعيش أكثر من 100 عام"
-};
-    
-    // البحث عن أفضل تطابق
-    for (const [key, value] of Object.entries(knowledgeBase)) {
-        if (lowerQuestion.includes(key.toLowerCase())) {
-            return value;
-        }
+    // Sample knowledge base in Arabic
+    if (lowerQuestion.includes('الشمس') || lowerQuestion.includes('الشموس')) {
+        return "الشمس هي النجم المركزي في نظامنا الشمسي. تدور الأرض حول الشمس مرة كل 365.25 يوم، مما يسبب تغير الفصول.";
     }
-    
-    // إذا لم يتم العثور على إجابة محددة
-    const fallbackResponses = [
-        "هذا سؤال مثير للاهتمام! للأسف لدي معلومات محدودة عن هذا الموضوع المحدد. هل يمكنني مساعدتك في شيء آخر؟",
-        "أنا متخصص أكثر في مجال البرمجة والتقنية، ولكن حسب معلوماتي... هذا الموضوع يحتاج إلى مزيد من البحث.",
-        "حاليا لا أملك إجابة دقيقة عن هذا السؤال، لكني يمكنني مساعدتك في مواضيع أخرى.",
-        "هذا خارج نطاق تخصصي الأساسي، لكني أحاول التعلم باستمرار. هل لديك أسئلة أخرى؟"
-    ];
-    
-    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+    else if (lowerQuestion.includes('القمر') || lowerQuestion.includes('أقمار')) {
+        return "القمر هو التابع الطبيعي الوحيد للأرض. يستغرق حوالي 27.3 يوم ليدور حول الأرض، ويسبب ظاهرة المد والجزر.";
+    }
+    else if (lowerQuestion.includes('البرمجة') || lowerQuestion.includes('مطور')) {
+        return "البرمجة هي عملية كتابة تعليمات للحاسوب لتنفيذ مهام محددة. أشهر لغات البرمجة تشمل Python وJavaScript وJava وC++.";
+    }
+    else if (lowerQuestion.includes('الذكاء الاصطناعي') || lowerQuestion.includes('ai')) {
+        return "الذكاء الاصطناعي هو مجال من علوم الحاسوب يهتم بإنشاء أنظمة قادرة على أداء مهام تتطلب ذكاءً بشرياً مثل التعلم واتخاذ القرارات.";
+    }
+    else {
+        const responses = [
+            "هذا سؤال مثير للاهتمام! للأسف لدي معلومات محدودة عن هذا الموضوع المحدد. هل يمكنني مساعدتك في شيء آخر؟",
+            "أنا متخصص أكثر في مجال البرمجة والتقنية، ولكن حسب معلوماتي... [إجابة عامة]. هل تريد تفاصيل أكثر؟",
+            "حاليا لا أملك إجابة دقيقة عن هذا السؤال، لكني يمكنني مساعدتك في مواضيع البرمجة والتقنية.",
+            "هذا خارج نطاق تخصصي الأساسي، لكني أحاول التعلم باستمرار. هل لديك أسئلة عن البرمجة أو تطوير الويب؟"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
 }
 
 // Get English general knowledge answer

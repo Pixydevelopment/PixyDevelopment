@@ -2056,7 +2056,8 @@ body {
             }, 1000);
         }
 
-//// Generate bot response
+
+// Generate bot response
 function generateBotResponse(message) {
     let response = '';
     let code = '';
@@ -2064,106 +2065,201 @@ function generateBotResponse(message) {
     // Convert message to lowercase for easier matching
     const lowerMessage = message.toLowerCase();
     
-    // Check if message is not in Arabic
+    // Check language and respond accordingly
     const isNonArabic = /[a-z]/.test(message);
     
-    // Respond in the same language as the user
     if (isNonArabic) {
-        return generateEnglishResponse(message);
+        response = generateEnglishResponse(message);
+    } else {
+        // Handle Arabic responses
+        response = generateArabicResponse(message);
     }
     
-    // Check for Lua requests
-    if (lowerMessage.includes('لوا') || lowerMessage.includes('lua')) {
-        // ... (keep existing Lua responses)
-    } 
-    // Check for HTML requests
-    else if (lowerMessage.includes('html') || lowerMessage.includes('إتش تي إم إل') || lowerMessage.includes('صفحة ويب')) {
-        // ... (keep existing HTML responses)
-    }
-    // Check for CSS requests
-    else if (lowerMessage.includes('css') || lowerMessage.includes('سي إس إس') || lowerMessage.includes('تنسيق')) {
-        // ... (keep existing CSS responses)
-    }
-    // General knowledge questions
-    else if (lowerMessage.includes('؟') || lowerMessage.includes('ما') || lowerMessage.includes('كيف') || 
-             lowerMessage.includes('لماذا') || lowerMessage.includes('أين') || lowerMessage.includes('متى')) {
-        response = getGeneralKnowledgeAnswer(message);
-    }
-    // If no specific request
-    else {
-        response = getGeneralResponse(message);
-    }
-    
-    if (response) {
-        addBotMessage(response);
-    }
+    addBotMessage(response);
     
     if (code) {
         addCodeMessage(code, lowerMessage.includes('لوا') ? 'lua' : 
-                             lowerMessage.includes('html') ? 'html' : 'css');
+                         lowerMessage.includes('html') ? 'html' : 'css');
     }
 }
 
-// Generate response for English messages
+function generateArabicResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Handle greetings
+    if (lowerMessage.includes('السلام عليكم') || lowerMessage.includes('سلام') || 
+        lowerMessage.includes('مرحبا') || lowerMessage.includes('اهلا') || 
+        lowerMessage.includes('مرحباً') || lowerMessage.includes('أهلا')) {
+        const greetings = [
+            "وعليكم السلام ورحمة الله وبركاته! كيف يمكنني مساعدتك اليوم؟",
+            "مرحباً بك! كيف أساعدك اليوم؟",
+            "أهلاً وسهلاً! كيف يمكنني خدمتك؟",
+            "وعليكم السلام! كيف حالك اليوم؟"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+    }
+    
+    // Handle general questions
+    if (lowerMessage.includes('؟') || lowerMessage.includes('ما') || 
+        lowerMessage.includes('كيف') || lowerMessage.includes('لماذا') || 
+        lowerMessage.includes('أين') || lowerMessage.includes('متى')) {
+        return getGeneralKnowledgeAnswer(message);
+    }
+    
+    // Default response for other messages
+    return "أنا هنا لمساعدتك في أي موضوع. هل يمكنك توضيح طلبك أكثر؟";
+}
+
+
+// Update English response function similarly
 function generateEnglishResponse(message) {
     const lowerMessage = message.toLowerCase();
-    let response = '';
     
-    // Programming related questions
-    if (lowerMessage.includes('lua') || lowerMessage.includes('code') || 
-        lowerMessage.includes('html') || lowerMessage.includes('css') || 
-        lowerMessage.includes('programming')) {
-        return generateProgrammingResponse(message);
+    // Handle greetings
+    if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || 
+        lowerMessage.includes('hey') || lowerMessage.includes('greetings')) {
+        const greetings = [
+            "Hello! How can I help you today?",
+            "Hi there! What can I do for you?",
+            "Greetings! How may I assist you?",
+            "Hello! Nice to see you. How can I help?"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
     }
-    // General questions
-    else if (lowerMessage.includes('?') || lowerMessage.includes('what') || 
-             lowerMessage.includes('how') || lowerMessage.includes('why') || 
-             lowerMessage.includes('when') || lowerMessage.includes('where')) {
+    
+    // Handle general questions
+    if (lowerMessage.includes('?') || lowerMessage.includes('what') || 
+        lowerMessage.includes('how') || lowerMessage.includes('why') || 
+        lowerMessage.includes('when') || lowerMessage.includes('where')) {
         return getEnglishGeneralAnswer(message);
     }
-    // Greetings
-    else if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || 
-             lowerMessage.includes('hey')) {
-        return "Hello! I'm PixyAi Pro. How can I assist you today?";
+    
+    // Default response for other messages
+    return "I'm here to help with any topic. Could you clarify your request?";
+}
+
+function getEnglishGeneralAnswer(question) {
+    const lowerQuestion = question.toLowerCase();
+    
+    // Extensive knowledge base in English
+    const knowledgeBase = {
+        // General
+        "what is your name": "I'm PixyAi Pro, your smart programming assistant!",
+        "who created you": "I was developed to help programmers and developers in their daily work",
+        
+        // Technology
+        "what is programming": "Programming is the process of creating instructions for computers to execute",
+        "what is artificial intelligence": "AI is the simulation of human intelligence in machines programmed to think like humans",
+        
+        // Science
+        "how are clouds formed": "Clouds form when water evaporates from the surface and rises to cooler altitudes where it condenses",
+        "what is gravity": "Gravity is the force that attracts objects toward each other, it's what keeps us grounded on Earth",
+        
+        // History
+        "who discovered america": "Christopher Columbus is credited with discovering America in 1492",
+        "when did world war ii end": "World War II ended in 1945",
+        
+        // Math
+        "what is a prime number": "A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself",
+        "what is pythagorean theorem": "In a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides"
+    };
+    
+    // Find the best match
+    for (const [key, value] of Object.entries(knowledgeBase)) {
+        if (lowerQuestion.includes(key.toLowerCase())) {
+            return value;
+        }
     }
-    // Default response
-    else {
-        const responses = [
-            "I'm here to help with programming and general knowledge. Could you clarify your request?",
-            "How can I assist you today? I can help with programming questions or general knowledge.",
-            "I'm happy to help! What do you need assistance with?",
-            "Could you provide more details about what you're looking for?"
-        ];
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
+    
+    // Fallback responses
+    const fallbackResponses = [
+        "That's an interesting question! I don't have specific information on that topic. Can I help with something else?",
+        "I'm more specialized in programming and tech fields, but regarding your question... it would require more research.",
+        "I don't have an exact answer for that right now, but I can help with other topics.",
+        "That's outside my main area of expertise, but I'm constantly learning. Do you have other questions?"
+    ];
+    
+    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
 }
 
 // Get general knowledge answer
-function getGeneralKnowledgeAnswer(question) {
-    const lowerQuestion = question.toLowerCase();
+// موسوعة معرفية واسعة بالعربية
+const knowledgeBase = {
+    // معلومات عامة
+    "ما هو اسمك": "أنا PixyAi Pro، مساعدك الذكي في البرمجة والتقنية!",
+    "من صنعك": "تم تطويري لمساعدة المبرمجين والمطورين في أعمالهم اليومية",
     
-    // Sample knowledge base in Arabic
-    if (lowerQuestion.includes('الشمس') || lowerQuestion.includes('الشموس')) {
-        return "الشمس هي النجم المركزي في نظامنا الشمسي. تدور الأرض حول الشمس مرة كل 365.25 يوم، مما يسبب تغير الفصول.";
+    // جغرافيا
+    "كم درجة الحرارة في الكويت": "درجة الحرارة في الكويت تتراوح بين 45°م صيفاً و8°م شتاءً في المتوسط",
+    "ما هي عاصمة فرنسا": "باريس هي العاصمة الجميلة لفرنسا",
+    "ما هي أكبر دولة في العالم": "روسيا هي أكبر دولة في العالم من حيث المساحة",
+    "ما هي أعلى قمة في العالم": "قمة إفرست هي أعلى قمة في العالم بارتفاع 8848 متراً",
+    
+    // علوم
+    "كيف تتكون السحب": "تتكون السحب عندما يتبخر الماء من الأرض ويصعد إلى الأعلى حيث يبرد ويتكثف",
+    "ما هي الجاذبية": "الجاذبية هي القوة التي تجذب الأجسام نحو بعضها البعض، وهي ما يجعلنا ملتصقين بالأرض",
+    "ما هو التركيب الضوئي": "التركيب الضوئي هو عملية تقوم بها النباتات لتحويل ضوء الشمس إلى طاقة كيميائية",
+    "كم عدد العظام في جسم الإنسان": "يحتوي جسم الإنسان البالغ على 206 عظمة",
+    
+    // تاريخ
+    "من اكتشف أمريكا": "كريستوفر كولومبوس هو الذي اكتشف أمريكا عام 1492",
+    "متى انتهت الحرب العالمية الثانية": "انتهت الحرب العالمية الثانية في عام 1945",
+    "من هو أول رائد فضاء": "يوري جاجارين كان أول إنسان يصل إلى الفضاء عام 1961",
+    "متى تأسست السعودية": "تأسست المملكة العربية السعودية عام 1932م",
+    
+    // رياضيات
+    "ما هو العدد الأولي": "العدد الأولي هو عدد طبيعي أكبر من 1 ليس له قواسم غير نفسه والواحد",
+    "ما هي نظرية فيثاغورث": "في المثلث القائم، مربع الوتر يساوي مجموع مربعي الضلعين الآخرين",
+    "ما هو العدد الذهبي": "العدد الذهبي هو (1+√5)/2 ≈ 1.618 ويظهر كثيراً في الفن والطبيعة",
+    
+    // تقنية
+    "ما هي لغة البرمجة": "لغات البرمجة هي وسيلة للتواصل مع الحواسيب وتوجيهها لأداء مهام محددة",
+    "ما هو الذكاء الاصطناعي": "الذكاء الاصطناعي هو محاكاة الذكاء البشري في الآلات المبرمجة للتفكير مثل البشر",
+    "ما هو الفرق بين HTTP و HTTPS": "HTTPS هو النسخة الآمنة من HTTP حيث يتم تشفير البيانات المتبادلة",
+    
+    // ثقافة عامة
+    "من هو مؤلف كتاب الشفرة": "دان براون هو مؤلف رواية شفرة دافنشي الشهيرة",
+    "ما هي عملة اليابان": "الين الياباني هو العملة الرسمية لليابان",
+    "كم عدد أيام السنة الكبيسة": "السنة الكبيسة لها 366 يوماً حيث يضاف يوم إلى فبراير كل 4 سنوات",
+    
+    // طب وصحة
+    "ما هو معدل ضغط الدم الطبيعي": "المعدل الطبيعي لضغط الدم هو حوالي 120/80 ملم زئبق",
+    "ما هي أعراض الإنفلونزا": "تشمل الحمى، السعال، التهاب الحلق، آلام العضلات والتعب",
+    "كم لتر من الماء يجب شربه يومياً": "يوصى بشرب حوالي 2-3 لترات يومياً للشخص البالغ",
+    
+    // اقتصاد
+    "ما هي أكبر شركة في العالم": "أبل وسامسونج وأمازون من بين أكبر الشركات حسب القيمة السوقية",
+    "ما هو الناتج المحلي الإجمالي": "هو القيمة السوقية لكل السلع والخدمات المنتجة في بلد ما خلال سنة",
+    
+    // دين
+    "كم عدد أركان الإسلام": "أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، والحج",
+    "ما هي آخر سورة في القرآن": "سورة الناس هي آخر سورة في المصحف الشريف",
+    
+    // رياضة
+    "من هو هداف كأس العالم التاريخي": "ميروسلاف كلوزه الألماني برصيد 16 هدفاً في كأس العالم",
+    "كم عدد لاعبي كرة القدم": "11 لاعباً لكل فريق في كرة القدم",
+    
+    // حيوانات
+    "ما هو أسرع حيوان في العالم": "الفهد الصياد هو أسرع حيوان بري بسرعة تصل إلى 120 كم/ساعة",
+    "كم تعيش السلحفاة": "بعض أنواع السلاحف يمكن أن تعيش أكثر من 100 عام"
+};
+    
+    // البحث عن أفضل تطابق
+    for (const [key, value] of Object.entries(knowledgeBase)) {
+        if (lowerQuestion.includes(key.toLowerCase())) {
+            return value;
+        }
     }
-    else if (lowerQuestion.includes('القمر') || lowerQuestion.includes('أقمار')) {
-        return "القمر هو التابع الطبيعي الوحيد للأرض. يستغرق حوالي 27.3 يوم ليدور حول الأرض، ويسبب ظاهرة المد والجزر.";
-    }
-    else if (lowerQuestion.includes('البرمجة') || lowerQuestion.includes('مطور')) {
-        return "البرمجة هي عملية كتابة تعليمات للحاسوب لتنفيذ مهام محددة. أشهر لغات البرمجة تشمل Python وJavaScript وJava وC++.";
-    }
-    else if (lowerQuestion.includes('الذكاء الاصطناعي') || lowerQuestion.includes('ai')) {
-        return "الذكاء الاصطناعي هو مجال من علوم الحاسوب يهتم بإنشاء أنظمة قادرة على أداء مهام تتطلب ذكاءً بشرياً مثل التعلم واتخاذ القرارات.";
-    }
-    else {
-        const responses = [
-            "هذا سؤال مثير للاهتمام! للأسف لدي معلومات محدودة عن هذا الموضوع المحدد. هل يمكنني مساعدتك في شيء آخر؟",
-            "أنا متخصص أكثر في مجال البرمجة والتقنية، ولكن حسب معلوماتي... [إجابة عامة]. هل تريد تفاصيل أكثر؟",
-            "حاليا لا أملك إجابة دقيقة عن هذا السؤال، لكني يمكنني مساعدتك في مواضيع البرمجة والتقنية.",
-            "هذا خارج نطاق تخصصي الأساسي، لكني أحاول التعلم باستمرار. هل لديك أسئلة عن البرمجة أو تطوير الويب؟"
-        ];
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
+    
+    // إذا لم يتم العثور على إجابة محددة
+    const fallbackResponses = [
+        "هذا سؤال مثير للاهتمام! للأسف لدي معلومات محدودة عن هذا الموضوع المحدد. هل يمكنني مساعدتك في شيء آخر؟",
+        "أنا متخصص أكثر في مجال البرمجة والتقنية، ولكن حسب معلوماتي... هذا الموضوع يحتاج إلى مزيد من البحث.",
+        "حاليا لا أملك إجابة دقيقة عن هذا السؤال، لكني يمكنني مساعدتك في مواضيع أخرى.",
+        "هذا خارج نطاق تخصصي الأساسي، لكني أحاول التعلم باستمرار. هل لديك أسئلة أخرى؟"
+    ];
+    
+    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
 }
 
 // Get English general knowledge answer
@@ -2204,6 +2300,7 @@ function detectLanguage(text) {
     }
     return 'unknown';
 }
+
 
 // Get general response based on language
 function getGeneralResponse(message) {

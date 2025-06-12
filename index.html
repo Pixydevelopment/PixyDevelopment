@@ -974,6 +974,8 @@
             </div>
         </header>
 
+        
+
         <!-- Main Content -->
         <div class="main-content">
             <!-- Sidebar -->
@@ -1394,6 +1396,51 @@
         margin-bottom: 10px;
     }
     
+/* Payment Methods Styles */
+.payment-methods {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.payment-method {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.payment-method i {
+    font-size: 24px;
+}
+
+.payment-method.active {
+    border-color: #4facfe;
+    background: rgba(79, 172, 254, 0.1);
+}
+
+.payment-method:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Card Type Icons */
+.card-type-icon {
+    font-size: 30px;
+    margin-right: 10px;
+}
+
+.visa { color: #1a1f71; }
+.mastercard { color: #eb001b; }
+.amex { color: #002663; }
+.discover { color: #ff6000; }
+
     .category-badge {
         background: linear-gradient(135deg, #00f2fe, #00f2fe);
         color: white;
@@ -2562,53 +2609,14 @@
 
         <!-- Pricing Section -->
         <section class="pricing-section">
-            <h2 style="text-align: center; margin-bottom: 20px;">💎 خطط الاشتراك</h2>
-            <p style="text-align: center; opacity: 0.8;">اختر الخطة المناسبة لاحتياجاتك</p>
-            
+            <h2 style="text-align: center; margin-bottom: 20px;">Ali > BL > New Later</h2>            
             <div class="pricing-plans">
                 <div class="plan-card">
-                    <h3>مجاني</h3>
-                    <div class="plan-price">$0<small>/شهر</small></div>
-                    <ul class="plan-features">
-                        <li>10 طلبات يومياً</li>
-                        <li>دعم أساسي للغات</li>
-                        <li>حد أقصى 1000 سطر</li>
-                        <li>حفظ لمدة يوم واحد</li>
-                    </ul>
-                    <button class="btn btn-secondary" onclick="selectPlan('free')">البدء مجاناً</button>
+                    <h3>جميع الحقوق خاصه با متجر PixyAi</h3>
+                </ul>
                 </div>
 
-                <div class="plan-card popular">
-                    <h3>Pro</h3>
-                    <div class="plan-price">$29<small>/شهر</small></div>
-                    <ul class="plan-features">
-                        <li>500 طلب يومياً</li>
-                        <li>جميع اللغات المدعومة</li>
-                        <li>حد أقصى 50,000 سطر</li>
-                        <li>حفظ لمدة شهر</li>
-                        <li>دعم أولوية</li>
-                        <li>تحليل متقدم للأخطاء</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="selectPlan('pro')">اشترك الآن</button>
-                </div>
-
-                <div class="plan-card">
-                    <h3>Enterprise</h3>
-                    <div class="plan-price">$99<small>/شهر</small></div>
-                    <ul class="plan-features">
-                        <li>طلبات غير محدودة</li>
-                        <li>جميع المميزات</li>
-                        <li>حد أقصى 100,000+ سطر</li>
-                        <li>حفظ دائم</li>
-                        <li>دعم مخصص 24/7</li>
-                        <li>API مخصص</li>
-                        <li>تدريب فريق العمل</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="selectPlan('enterprise')">تواصل معنا</button>
-                </div>
-            </div>
-        </section>
-    </div>
+               
 
     <!-- Login Modal -->
     <div class="modal" id="loginModal">
@@ -2655,6 +2663,99 @@
             </form>
         </div>
     </div>
+
+<!-- Payment Modal -->
+<div class="modal" id="paymentModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title"><i class="fas fa-credit-card"></i> تفاصيل الدفع</h2>
+            <p class="modal-subtitle">الخطة المختارة: <span id="selectedPlanName">Pro</span> - $<span id="selectedPlanPrice">29</span>/شهر</p>
+        </div>
+        
+        <form id="paymentForm">
+            <div class="form-group">
+                <label class="form-label">اسم صاحب البطاقة</label>
+                <input type="text" id="cardName" class="form-input" placeholder="كما هو مدون على البطاقة" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">رقم البطاقة</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="text" id="cardNumber" class="form-input" placeholder="1234 5678 9012 3456" required maxlength="19">
+                    <div id="cardType" style="font-size: 24px;"></div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label class="form-label">تاريخ الانتهاء</label>
+                    <input type="text" id="cardExpiry" class="form-input" placeholder="MM/YY" required maxlength="5">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">CVV</label>
+                    <input type="text" id="cardCvv" class="form-input" placeholder="123" required maxlength="4">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">طريقة الدفع</label>
+                <div class="payment-methods">
+                    <div class="payment-method active" data-method="card">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        بطاقة ائتمان
+                    </div>
+                    <div class="payment-method" data-method="paypal">
+                        <i class="fab fa-paypal"></i>
+                        باي بال
+                    </div>
+                </div>
+                <input type="hidden" id="paymentMethod" value="card">
+            </div>
+            
+            <div class="form-group" style="background: rgba(0,0,0,0.1); padding: 15px; border-radius: 10px;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="saveCard" style="width: auto;">
+                    حفظ معلومات الدفع للدفع المستقبلي
+                </label>
+                <p style="font-size: 12px; margin-top: 10px; opacity: 0.7;">
+                    <i class="fas fa-lock"></i> معلوماتك محمية بتشفير SSL 256-bit
+                </p>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-lock"></i> تأكيد الدفع
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('paymentModal')">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Payment Success Modal -->
+<div class="modal" id="paymentSuccessModal">
+    <div class="modal-content" style="text-align: center; max-width: 500px;">
+        <div style="font-size: 60px; color: #4CAF50; margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 class="modal-title">تمت عملية الدفع بنجاح!</h2>
+        <p class="modal-subtitle">شكراً لاشتراكك في PixyAi Pro</p>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <p style="margin-bottom: 10px;">الخطة: <strong id="successPlanName">Pro</strong></p>
+            <p style="margin-bottom: 10px;">المبلغ: $<strong id="successPlanPrice">29</strong>/شهر</p>
+            <p>رقم المرجع: <strong id="paymentReference">PAY-XXXXXX</strong></p>
+        </div>
+        
+        <button class="btn btn-primary" onclick="closeModal('paymentSuccessModal')">
+            <i class="fas fa-thumbs-up"></i> حسناً
+        </button>
+    </div>
+</div>
 
     <script>
         // Global variables
@@ -3439,6 +3540,199 @@ body {
                 incrementUsage();
             }, 1500);
         }
+
+        // Global variables for payment
+let selectedPlan = null;
+
+// Modify the selectPlan function
+function selectPlan(plan) {
+    if (!currentUser) {
+        alert('يجب تسجيل الدخول أولاً لتغيير الخطة');
+        showModal('loginModal');
+        return;
+    }
+    
+    if (plan === 'enterprise') {
+        // Handle enterprise plan separately
+        currentUser.plan = plan;
+        localStorage.setItem('PixyAiUser', JSON.stringify(currentUser));
+        updateUserUI();
+        addBotMessage('شكراً لاهتمامك بخطة Enterprise! سيتصل بك فريق الدعم قريباً.');
+        return;
+    }
+    
+    selectedPlan = plan;
+    
+    // Update payment modal with plan info
+    document.getElementById('selectedPlanName').textContent = 
+        plan === 'pro' ? 'Pro' : 'المجانية';
+    document.getElementById('selectedPlanPrice').textContent = 
+        plan === 'pro' ? '29' : '0';
+    
+    showModal('paymentModal');
+}
+
+// Handle payment form submission
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate card details
+    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+    const cardExpiry = document.getElementById('cardExpiry').value;
+    const cardCvv = document.getElementById('cardCvv').value;
+    const cardName = document.getElementById('cardName').value;
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    
+    if (paymentMethod === 'card') {
+        if (!validateCardNumber(cardNumber)) {
+            alert('رقم البطاقة غير صحيح');
+            return;
+        }
+        
+        if (!validateExpiry(cardExpiry)) {
+            alert('تاريخ الانتهاء غير صحيح. استخدم الصيغة MM/YY');
+            return;
+        }
+        
+        if (!cardCvv || cardCvv.length < 3) {
+            alert('رمز CVV غير صحيح');
+            return;
+        }
+    }
+    
+    // Simulate payment processing
+    processPayment();
+});
+
+// Validate card number
+function validateCardNumber(number) {
+    // Simple Luhn algorithm check
+    let sum = 0;
+    let shouldDouble = false;
+    
+    for (let i = number.length - 1; i >= 0; i--) {
+        let digit = parseInt(number.charAt(i));
+        
+        if (shouldDouble) {
+            digit *= 2;
+            if (digit > 9) digit -= 9;
+        }
+        
+        sum += digit;
+        shouldDouble = !shouldDouble;
+    }
+    
+    return (sum % 10) === 0 && number.length > 12;
+}
+
+// Validate expiry date
+function validateExpiry(expiry) {
+    if (!expiry || expiry.indexOf('/') === -1) return false;
+    
+    const [month, year] = expiry.split('/');
+    if (!month || !year || month.length !== 2 || year.length !== 2) return false;
+    
+    const now = new Date();
+    const currentYear = now.getFullYear() % 100;
+    const currentMonth = now.getMonth() + 1;
+    
+    const expYear = parseInt(year);
+    const expMonth = parseInt(month);
+    
+    if (expYear > currentYear + 20 || expYear < currentYear) return false;
+    if (expYear === currentYear && expMonth < currentMonth) return false;
+    if (expMonth < 1 || expMonth > 12) return false;
+    
+    return true;
+}
+
+// Process payment (simulated)
+function processPayment() {
+    // Show loading
+    const submitBtn = document.querySelector('#paymentForm [type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ المعالجة...';
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Update user plan
+        currentUser.plan = selectedPlan;
+        localStorage.setItem('PixyAiUser', JSON.stringify(currentUser));
+        
+        // Generate random reference
+        const ref = 'PAY-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+        
+        // Update success modal
+        document.getElementById('successPlanName').textContent = 
+            selectedPlan === 'pro' ? 'Pro' : 'المجانية';
+        document.getElementById('successPlanPrice').textContent = 
+            selectedPlan === 'pro' ? '29' : '0';
+        document.getElementById('paymentReference').textContent = ref;
+        
+        // Show success
+        closeModal('paymentModal');
+        showModal('paymentSuccessModal');
+        
+        // Update UI
+        updateUserUI();
+        addBotMessage(`تم تحديث اشتراكك إلى الخطة ${selectedPlan === 'pro' ? 'Pro' : 'المجانية'} بنجاح!`);
+        
+        // Reset form
+        document.getElementById('paymentForm').reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-lock"></i> تأكيد الدفع';
+    }, 2000);
+}
+
+// Detect card type from number
+document.getElementById('cardNumber').addEventListener('input', function(e) {
+    const cardNumber = e.target.value.replace(/\s/g, '');
+    const cardTypeEl = document.getElementById('cardType');
+    
+    // Visa
+    if (/^4/.test(cardNumber)) {
+        cardTypeEl.innerHTML = '<i class="fab fa-cc-visa"></i>';
+    } 
+    // Mastercard
+    else if (/^5[1-5]/.test(cardNumber)) {
+        cardTypeEl.innerHTML = '<i class="fab fa-cc-mastercard"></i>';
+    }
+    // Amex
+    else if (/^3[47]/.test(cardNumber)) {
+        cardTypeEl.innerHTML = '<i class="fab fa-cc-amex"></i>';
+    }
+    // Discover
+    else if (/^6(?:011|5)/.test(cardNumber)) {
+        cardTypeEl.innerHTML = '<i class="fab fa-cc-discover"></i>';
+    }
+    // Unknown
+    else {
+        cardTypeEl.innerHTML = '<i class="far fa-credit-card"></i>';
+    }
+    
+    // Format card number with spaces
+    if (cardNumber.length > 0 && cardNumber.length <= 16) {
+        e.target.value = cardNumber.match(/.{1,4}/g).join(' ');
+    }
+});
+
+// Format expiry date
+document.getElementById('cardExpiry').addEventListener('input', function(e) {
+    const value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length >= 2) {
+        e.target.value = value.substr(0, 2) + '/' + value.substr(2, 2);
+    }
+});
+
+// Payment method selection
+document.querySelectorAll('.payment-method').forEach(method => {
+    method.addEventListener('click', function() {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('paymentMethod').value = this.dataset.method;
+    });
+});
 
         // Select plan
         function selectPlan(plan) {
